@@ -1,10 +1,11 @@
 #
 # Description
 #    Generated train and test sets from the Hollywood dataset byu subsampling and building image mosaics.
-# 
+#    Outputted the Hollywood Dataset in the Coco Format
 # See:AI CAT + E2E team OneNote page for more information.  
 
 import os, sys, shutil, xmltodict
+
 # sys.path.append(r"C:\Users\pabuehle\Desktop\pythonLibrary")
 #TODO: add path to utils
 from pabuehle_utilities_CVbasic_v2 import *
@@ -39,7 +40,7 @@ outXmlDirTest  = os.path.join(outRootDir, "test", "annotations")
 outImgDirTrain = os.path.join(outRootDir, "train", "images")
 outImgDirTest  = os.path.join(outRootDir, "test", "images")
 
-if verbose:
+if verbose:6t4
       print("outXmlDirTrain", outXmlDirTrain)
       print("outImgDirTrain", outImgDirTrain)
       print("outXmlDirTest", outXmlDirTest)
@@ -138,6 +139,7 @@ for trainTestStr in ["test", "train"]:
                   # Loop over the positions in the grid
                   imgPaths = []
                   annoObjs = []
+
                   for gridPosW in range(gridSize):
                         for gridPosH in range(gridSize):
 
@@ -212,6 +214,7 @@ for trainTestStr in ["test", "train"]:
                   # Create xml string
                   outImgFilename  = "{}_{}.jpg".format(gridSize, imgCount)
                   outAnnoFilename = "{}_{}.xml".format(gridSize, imgCount)
+                  
                   xmlStr = xmlHeader.format(outImgFilename, outImgFilename, imWidth(outImg), imHeight(outImg))
                   for annoObj in annoObjs:
                         bboxObj = annoObj['bndbox']
