@@ -10,8 +10,8 @@ visualize = False
 numImages = {'train':50, 'test':30, 'val':30}
 verbose = True
 
-rawDataDir = "./data/HollywoodHeads"
-outDir = "./data/Heads"
+rawDataDir = sys.argv[1]
+outDir = sys.argv[2]
 annotationDir = os.path.join(outDir, "annotations")
 
 if os.path.exists(outDir):
