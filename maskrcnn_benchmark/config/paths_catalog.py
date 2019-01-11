@@ -80,15 +80,15 @@ class DatasetCatalog(object):
             "img_dir": "cityscapes/images",
             "ann_file": "cityscapes/annotations/instancesonly_filtered_gtFine_test.json"
         },
-        "head_train": {
+        "cocohead_train": {
             "img_dir": "head/train",
             "ann_file": "head/annotations/instances_train.json"
         },
-        "head_val": {
+        "cocohead_val": {
             "img_dir": "head/val",
             "ann_file": "head/annotations/instances_val.json"
         },
-        "head_test": {
+        "cocohead_test": {
             "img_dir": "head/test",
             "ann_file": "head/annotations/instances_test.json"
         }
