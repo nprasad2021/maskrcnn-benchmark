@@ -36,7 +36,7 @@ def findFilenames(stage):
     return readFile(os.path.join(splitDir, stage + ".txt"))
 
 def computeImageSizes(stage, imgFilenamesSorted):
-    imgSizesFilename = os.path.join(rawDataDir, "imgSizes_" + stage + ".dat")
+    imgSizesFilename = os.path.join(outDir, "imgSizes_" + stage + ".dat")
     if os.path.exists(imgSizesFilename):
         imgSizes = readPickle(imgSizesFilename)
         return imgSizes
