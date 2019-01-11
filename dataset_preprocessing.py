@@ -1,9 +1,12 @@
 # coding: utf-8
 # Pipeline to convert the hollywood heads dataset to the coco format
-
+import subprocess
+output = subprocess.check_output([sys.executable, filename,data], shell=False)
+print(output)
 import os, sys, shutil, xmltodict, json
 from pabuehle_utilities_CVbasic_v2 import *
 from pabuehle_utilities_general_v2 import *
+
 
 gridSizes = [1] #[1, 3, 5, 7]
 visualize = False
