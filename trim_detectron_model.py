@@ -1,6 +1,9 @@
-import os, torch, argparse, urllib
+import os, torch, argparse, urllib.request
 from maskrcnn_benchmark.config import cfg
 from maskrcnn_benchmark.utils.c2_model_loading import load_c2_format
+from pabuehle_utilities_CVbasic_v2 import *
+from pabuehle_utilities_general_v2 import *
+from maskrcnn_benchmark.config.paths_catalog import ModelCatalog
 
 def removekey(d, listofkeys):
     r = dict(d)
@@ -26,7 +29,7 @@ parser.add_argument(
 
 parser.add_argument(
     "--url",
-    default="https://download.pytorch.org/models/maskrcnn/e2e_faster_rcnn_R_50_FPN_1x.pth",
+    default=ModelCatalog.get("Caffe2Detectron/COCO/35857345/e2e_faster_rcnn_R-50-FPN_1x"),
     help="url to file",
     type=str,
 )
@@ -34,9 +37,8 @@ parser.add_argument(
 args = parser.parse_args()
 
 pretrained_path = "../tmp.pth"
-URL = args.URL
-modelFile = urllib.URLOpener()
-modelFile.retrieve(URL, pretrained_path)
+URL = args.url
+urllib.request.urlretrieve(URL, pretrained_path)
 
 saveDir = "../pretrained_models"
 makeDirectory(saveDir)
@@ -51,4 +53,4 @@ newdict = _d
 newdict['model'] = removekey(_d['model'],
                              ['cls_score.bias', 'cls_score.weight', 'bbox_pred.bias', 'bbox_pred.weight'])
 torch.save(newdict, os.path.join(saveDir, args.save_file))
-print('saved to {}.'.format(os.path.join(saveDir, args.save_file))
+print('saved to {}.'.format(os.path.join(saveDir, args.save_file)))
