@@ -1,9 +1,6 @@
-import os
-import torch
-import argparse
+import os, torch, argparse, urllib
 from maskrcnn_benchmark.config import cfg
 from maskrcnn_benchmark.utils.c2_model_loading import load_c2_format
-
 
 def removekey(d, listofkeys):
     r = dict(d)
@@ -12,19 +9,11 @@ def removekey(d, listofkeys):
         r.pop(key)
     return r
 
-
 parser = argparse.ArgumentParser(description="Trim Detection weights and save in PyTorch format.")
+
 parser.add_argument(
-    "--pretrained_path",
-    default="~/.torch/models/_detectron_35858933_12_2017_baselines_e2e_mask_rcnn_R-50-FPN_1x.yaml.01_48_14.DzEQe4wC_output_train_coco_2014_train%3Acoco_2014_valminusminival_generalized_rcnn_model_final.pkl",
-    help="path to detectron pretrained weight(.pkl)",
-    type=str,
-)
-saveDir = "./pretrained_models"
-makeDirectory(saveDir)
-parser.add_argument(
-    "--save_path",
-    default=os.path.join(saveDir, "mask_rcnn_R-50-FPN_1x_detectron_no_last_layers.pth")
+    "--save_file",
+    default="fastercnnmodel_no_last_layers.pth",
     help="path to save the converted model",
     type=str,
 )
@@ -35,9 +24,24 @@ parser.add_argument(
     type=str,
 )
 
+parser.add_argument(
+    "--url",
+    default="https://download.pytorch.org/models/maskrcnn/e2e_faster_rcnn_R_50_FPN_1x.pth",
+    help="url to file",
+    type=str,
+)
+
 args = parser.parse_args()
-#
-DETECTRON_PATH = os.path.expanduser(args.pretrained_path)
+
+pretrained_path = "../tmp.pth"
+URL = args.URL
+modelFile = urllib.URLOpener()
+modelFile.retrieve(URL, pretrained_path)
+
+saveDir = "../pretrained_models"
+makeDirectory(saveDir)
+
+DETECTRON_PATH = os.path.expanduser(pretrained_path)
 print('detectron path: {}'.format(DETECTRON_PATH))
 
 cfg.merge_from_file(args.cfg)
@@ -46,5 +50,5 @@ newdict = _d
 
 newdict['model'] = removekey(_d['model'],
                              ['cls_score.bias', 'cls_score.weight', 'bbox_pred.bias', 'bbox_pred.weight'])
-torch.save(newdict, args.save_path)
-print('saved to {}.'.format(args.save_path))
+torch.save(newdict, os.path.join(saveDir, args.save_file))
+print('saved to {}.'.format(os.path.join(saveDir, args.save_file))
