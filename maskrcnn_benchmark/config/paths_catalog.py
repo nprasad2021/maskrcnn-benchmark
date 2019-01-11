@@ -79,6 +79,18 @@ class DatasetCatalog(object):
         "cityscapes_fine_instanceonly_seg_test_cocostyle": {
             "img_dir": "cityscapes/images",
             "ann_file": "cityscapes/annotations/instancesonly_filtered_gtFine_test.json"
+        },
+        "head_train": {
+            "img_dir": "head/train",
+            "ann_file": "head/annotations/instances_train.json"
+        },
+        "head_val": {
+            "img_dir": "head/val",
+            "ann_file": "head/annotations/instances_val.json"
+        },
+        "head_test": {
+            "img_dir": "head/test",
+            "ann_file": "head/annotations/instances_test.json"
         }
     }
 
