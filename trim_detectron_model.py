@@ -20,15 +20,17 @@ parser.add_argument(
     help="path to detectron pretrained weight(.pkl)",
     type=str,
 )
+saveDir = "./pretrained_models"
+makeDirectory(saveDir)
 parser.add_argument(
     "--save_path",
-    default="./pretrained_model/mask_rcnn_R-50-FPN_1x_detectron_no_last_layers.pth",
+    default=os.path.join(saveDir, "mask_rcnn_R-50-FPN_1x_detectron_no_last_layers.pth")
     help="path to save the converted model",
     type=str,
 )
 parser.add_argument(
     "--cfg",
-    default="configs/e2e_mask_rcnn_R_50_FPN_1x.yaml",
+    default="configs/heads.yaml",
     help="path to config file",
     type=str,
 )
