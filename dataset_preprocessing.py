@@ -171,7 +171,7 @@ def annotate_image(gridSize, imgFilenames, imgSizes, imgCount, annotationCount, 
         annotationCount += 1
         
         x, y, oW, oH = calculate_coco_bounding_box(annoObj['bndbox'], width, height)
-        nextA = {"id":annotationCount, "image_id":imgCount, "category_id":1, "iscrowd":0, "bbox":[x,y,oW,oH]}
+        nextA = {"id":annotationCount, "image_id":imgCount, "category_id":1, "iscrowd":0, "bbox":[x,y,oW,oH], 'area':width*height}
         object_annotations.append(nextA)
     return image_annotation, object_annotations, annotationCount
 
