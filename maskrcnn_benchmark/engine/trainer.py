@@ -2,6 +2,7 @@
 import datetime
 import logging
 import time
+import pickle
 
 import torch
 import torch.distributed as dist
@@ -44,6 +45,7 @@ def do_train(
     device,
     checkpoint_period,
     arguments,
+    save_path="./log/val_acc0.txt"
 ):
     logger = logging.getLogger("maskrcnn_benchmark.trainer")
     logger.info("Start training")
@@ -54,6 +56,7 @@ def do_train(
     start_training_time = time.time()
     end = time.time()
     for iteration, (images, targets, _) in enumerate(data_loader, start_iter):
+
         data_time = time.time() - end
         iteration = iteration + 1
         arguments["iteration"] = iteration
@@ -102,7 +105,9 @@ def do_train(
                 )
             )
         if iteration % checkpoint_period == 0:
+
             checkpointer.save("model_{:07d}".format(iteration), **arguments)
+
         if iteration == max_iter:
             checkpointer.save("model_final", **arguments)
 
