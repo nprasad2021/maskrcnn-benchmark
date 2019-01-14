@@ -6,14 +6,31 @@ import os, sys, shutil, xmltodict, json
 from pabuehle_utilities_CVbasic_v2 import *
 from pabuehle_utilities_general_v2 import *
 
+parser = argparse.ArgumentParser(description="Trim Detection weights and save in PyTorch format.")
+
+parser.add_argument(
+    "--origin",
+    default="/neerajFiles/data/HollywoodHeads",
+    help="path to load heads data",
+    type=str,
+)
+parser.add_argument(
+    "--output",
+    default="./datasets/head/",
+    help="path to dataset output",
+    type=str,
+)
+
+args = parser.parse_args()
 
 gridSizes = [1] #[1, 3, 5, 7]
 visualize = False
 numImages = {'train':50, 'test':30, 'val':30}
 verbose = True
 
-rawDataDir = sys.argv[1]
-outDir = sys.argv[2]
+rawDataDir = args.origin
+assert os.path.exists(rawDataDir)
+outDir = args.output
 annotationDir = os.path.join(outDir, "annotations")
 
 if os.path.exists(outDir):
