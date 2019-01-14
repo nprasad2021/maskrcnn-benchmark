@@ -134,7 +134,7 @@ def image_mosaic(gridSize, imgPaths, imgScale):
     return outImg
 
 def calculate_coco_bounding_box(bbox, width, height):
-    return str(bbox['xmin']), str(bbox['ymin']), str(bbox['xmax']-bbox['xmin']), str(bbox['ymax']-bbox['ymin'])
+    return bbox['xmin'], bbox['ymin'], bbox['xmax']-bbox['xmin'], bbox['ymax']-bbox['ymin']
 
 def annotate_image(gridSize, imgFilenames, imgSizes, imgCount, annotationCount, stage):
     imgPaths, annoObjs, imgScale = assemble_images(gridSize, imgFilenames, imgSizes)
