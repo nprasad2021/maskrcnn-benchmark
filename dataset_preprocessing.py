@@ -2,7 +2,7 @@
 # Pipeline to convert the hollywood heads dataset to the coco format
 import sys
 print(sys.path)
-import os, sys, shutil, xmltodict, json
+import os, sys, shutil, xmltodict, json, argparse
 from pabuehle_utilities_CVbasic_v2 import *
 from pabuehle_utilities_general_v2 import *
 
@@ -151,7 +151,7 @@ def image_mosaic(gridSize, imgPaths, imgScale):
     return outImg
 
 def calculate_coco_bounding_box(bbox, width, height):
-    return bbox['xmin'], bbox['ymin'], bbox['xmax']-bbox['xmin'], bbox['ymax']-bbox['ymin']
+    return float(bbox['xmin']), float(bbox['ymin']), float(bbox['xmax']-bbox['xmin']), float(bbox['ymax']-bbox['ymin'])
 
 def annotate_image(gridSize, imgFilenames, imgSizes, imgCount, annotationCount, stage):
     imgPaths, annoObjs, imgScale = assemble_images(gridSize, imgFilenames, imgSizes)
