@@ -25,7 +25,7 @@ args = parser.parse_args()
 
 gridSizes = [1] #[1, 3, 5, 7]
 visualize = False
-numImages = {'train':10000, 'test':1000, 'val':1000}
+numImages = {'train':50, 'test':10, 'val':10}
 verbose = True
 
 rawDataDir = args.origin
