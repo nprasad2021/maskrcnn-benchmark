@@ -20,7 +20,7 @@ parser.add_argument(
     help="path to save the converted model",
     type=str,
 )
-parser.add_argument(
+parser.add_argument( 
     "--cfg",
     default="configs/heads.yaml",
     help="path to config file",
