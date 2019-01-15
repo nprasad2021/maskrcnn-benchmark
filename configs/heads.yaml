@@ -21,8 +21,8 @@ MODEL:
     PREDICTOR: "FPNPredictor"
     NUM_CLASSES: 2
 DATASETS:
-  TRAIN: ("cocohead_train", "cocohead_val")
-  TEST: ("cocohead_test",)
+  TRAIN: ("cocohead_train",)
+  TEST: ("cocohead_test", "cocohead_val")
 DATALOADER:
   SIZE_DIVISIBILITY: 32
 SOLVER:
