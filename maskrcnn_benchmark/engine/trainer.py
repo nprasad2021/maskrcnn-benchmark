@@ -14,6 +14,7 @@ from maskrcnn_benchmark.engine.inference import inference
 from maskrcnn_benchmark.utils.miscellaneous import mkdir
 from maskrcnn_benchmark.data import make_data_loader
 from maskrcnn_benchmark.engine.plotMaps import plot
+from maskrcnn_benchmark.utils.comm import synchronize, get_rank
 
 def val(cfg, model, distributed):
     if distributed:
