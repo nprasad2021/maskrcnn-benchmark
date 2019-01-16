@@ -111,7 +111,7 @@ def do_train(
         targets = [target.to(device) for target in targets]
 
         loss_dict = model(images, targets)
-
+        print(type(loss_dict))
         losses = sum(loss for loss in loss_dict.values())
 
         # reduce losses over all GPUs for logging purposes
