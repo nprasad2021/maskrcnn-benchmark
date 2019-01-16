@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 
 
 def plot(output, cfg):
-	for mode in (cfg.DATASETS.TRAIN + cfg.DATASETS.TEST):
+	dsts = cfg.DATASETS.TEST
+	for mode in dsts:
 		runKey(mode, output, cfg.OUTPUT_DIR)
 
 def runKey(mode, output, dirr):
