@@ -102,5 +102,4 @@ def inference(
                     predictions=predictions,
                     output_folder=output_folder,
                     **extra_args)
-    print(final_results)
     return final_results
