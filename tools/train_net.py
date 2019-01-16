@@ -8,7 +8,7 @@ Basic training script for PyTorch
 from maskrcnn_benchmark.utils.env import setup_environment  # noqa F401 isort:skip
 
 import argparse
-import os
+import os, shutil
 import sys
 print("System Paths: ", sys.path)
 
@@ -29,6 +29,9 @@ from maskrcnn_benchmark.utils.miscellaneous import mkdir
 
 
 def train(cfg, local_rank, distributed):
+    if os.path.exists(cfg.OUTPUT_DIR):
+        shutil.rmtree(cfg.OUTPUT_DIR)
+        
     model = build_detection_model(cfg)
     device = torch.device(cfg.MODEL.DEVICE)
     model.to(device)
