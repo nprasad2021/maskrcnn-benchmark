@@ -9,6 +9,8 @@ from maskrcnn_benchmark.utils.env import setup_environment  # noqa F401 isort:sk
 
 import argparse
 import os
+import sys
+print("System Paths: ", sys.path)
 
 import torch
 from maskrcnn_benchmark.config import cfg

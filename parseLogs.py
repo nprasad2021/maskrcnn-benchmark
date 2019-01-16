@@ -1,4 +1,4 @@
-import os
+import os, argparse, sys
 import matplotlib.pyplot as plt
 
 parser = argparse.ArgumentParser(description="Parameters for Logs Parsing")
@@ -22,7 +22,6 @@ def read(filename):
         lines = f.readlines()
     return lines
 
-
 def find_info(lines):
     tr_line_start = None
     tr_line_end = None
@@ -41,7 +40,6 @@ def find_info(lines):
             break
     return tr_line_start, tr_line_end, l_line
 
-
 def extractLoss(line):
     loss = line[line.find("loss:")+5:line.find("loss_classifier:")].split(" ")[1]
     return float(loss)
@@ -59,6 +57,9 @@ def scatter(tr_line_start, tr_line_end, save_path, title="Train Loss"):
 def plot(x, y, save_path, title="Loss"):
     plt.title("Train Loss")
     plt.scatter(x,y)
+    plt.xlabel("Iterations")
+    plt.ylabel("Training Loss")
+    plt.savefig(save_path, dvi=1000)
 
 
 def parse(filename, save_path):
