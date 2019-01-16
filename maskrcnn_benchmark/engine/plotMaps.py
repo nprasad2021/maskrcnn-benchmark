@@ -23,8 +23,8 @@ def runKey(mode, output, dirr):
 def scatter(server, part, save_dir, mode):
 	file_path = os.path.join(save_dir, part + "map.pdf")
 	its, acc = zip(*server)
-    plt.title("Accuracy on " + mode)
-    plt.scatter(its,acc)
-    plt.xlabel("Iterations")
-    plt.ylabel(part)
-    plt.savefig(file_path, dvi=1000)
+	plt.title("Accuracy on " + mode)
+	plt.scatter(its,acc)
+	plt.xlabel("Iterations")
+	plt.ylabel(part)
+	plt.savefig(file_path, dvi=1000)
