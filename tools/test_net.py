@@ -88,7 +88,7 @@ def main():
             output_folder=output_folder,
         )
         #print(results_final_0)
-        with open(dataset_name + "results.pkl", "w") as f:
+        with open(dataset_name + "results.pkl", "wb") as f:
             pickle.dump(results_final_0, f)
 
         synchronize()
