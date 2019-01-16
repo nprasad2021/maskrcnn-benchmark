@@ -20,7 +20,7 @@ def do_coco_evaluation(
     expected_results_sigma_tol,
 ):
     logger = logging.getLogger("maskrcnn_benchmark.inference")
-
+    print("box_only parameter in do_coco_evaluation(): ", box_only)
     if box_only:
         logger.info("Evaluating bbox proposals")
         areas = {"all": "", "small": "s", "medium": "m", "large": "l"}
