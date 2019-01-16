@@ -4,7 +4,7 @@
 from maskrcnn_benchmark.utils.env import setup_environment  # noqa F401 isort:skip
 
 import argparse
-import os
+import os, pickle
 
 import torch
 from maskrcnn_benchmark.config import cfg
@@ -87,7 +87,10 @@ def main():
             expected_results_sigma_tol=cfg.TEST.EXPECTED_RESULTS_SIGMA_TOL,
             output_folder=output_folder,
         )
-        print(results_final_0)
+        #print(results_final_0)
+        with open(dataset_name + "results.pkl", "w") as f:
+            pickle.dump(results_final_0, f)
+
         synchronize()
 
 
