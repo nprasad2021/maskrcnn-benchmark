@@ -27,12 +27,14 @@ def val(cfg, model, distributed):
     dataset_names = cfg.DATASETS.TEST + cfg.DATASETS.TRAIN
     if cfg.OUTPUT_DIR:
         for idx, dataset_name in enumerate(dataset_names):
+            print(dataset_name)
             output_folder = os.path.join(cfg.OUTPUT_DIR, "inference", dataset_name)
             mkdir(output_folder)
             output_folders[idx] = output_folder
     data_loaders_val = make_data_loader(cfg, is_train=False, is_distributed=distributed)
     output_tuple = {}
     for output_folder, dataset_name, data_loader_val in zip(output_folders, dataset_names, data_loaders_val):
+        print(dataset_name)
         result = inference(
             model,
             data_loader_val,
