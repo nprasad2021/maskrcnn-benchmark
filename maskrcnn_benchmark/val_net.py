@@ -61,7 +61,10 @@ def main(config_file="/home/nprasad/Documents/github/maskrcnn-benchmark/configs/
             mkdir(output_folder)
             output_folders[idx] = output_folder
     data_loaders_val = make_data_loader(cfg, is_train=False, is_distributed=distributed)
+    output_tuple = []
     for output_folder, dataset_name, data_loader_val in zip(output_folders, dataset_names, data_loaders_val):
+        if "test" in dataset_name:
+            continue
         result = inference(
             model,
             data_loader_val,
@@ -72,9 +75,10 @@ def main(config_file="/home/nprasad/Documents/github/maskrcnn-benchmark/configs/
             expected_results=cfg.TEST.EXPECTED_RESULTS,
             expected_results_sigma_tol=cfg.TEST.EXPECTED_RESULTS_SIGMA_TOL,
             output_folder=output_folder,
-        )
-        print(result)
+        )[0].results['bbox']
+        output_tuple.append((result['AP'].item(), result['AP50'].item(), dataset_name))
         synchronize()
+    return output_tuple
 
 if __name__ == "__main__":
     main()

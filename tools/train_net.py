@@ -73,7 +73,8 @@ def train(cfg, local_rank, distributed):
         device,
         checkpoint_period,
         arguments,
-        cfg
+        cfg,
+        args.distributed
     )
 
     return model
@@ -113,11 +114,20 @@ def main():
     parser = argparse.ArgumentParser(description="PyTorch Object Detection Training")
     parser.add_argument(
         "--config-file",
-        default="",
+        default="/home/nprasad/Documents/github/maskrcnn-benchmark/configs/heads.yaml",
         metavar="FILE",
         help="path to config file",
         type=str,
     )
+
+    parser.add_argument(
+        "--output-dir",
+        default="./results",
+        metavar="FILE",
+        help="path to results dir",
+        type=str,
+    )
+
     parser.add_argument("--local_rank", type=int, default=0)
     parser.add_argument(
         "--skip-test",
