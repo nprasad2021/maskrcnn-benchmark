@@ -87,19 +87,10 @@ def main():
             expected_results_sigma_tol=cfg.TEST.EXPECTED_RESULTS_SIGMA_TOL,
             output_folder=output_folder,
         )
-        r = results_final_0[0].results
+        r = results_final_0[0].results['bbox']['AP']
         print(type(r))
-        for ele in r:
-            print("Type of element", type(ele))
-            print("Actual Element: ", ele)
+        print(r)
 
-        print("Keys of Ordered Dict", results_final_0.keys())
-        for key in results_final_0.keys():
-            print(key)
-            print(results_final_0[key])
-        #print(results_final_0)
-        with open(dataset_name + "results.pkl", "wb") as f:
-            pickle.dump(results_final_0, f)
         
         synchronize()
 
