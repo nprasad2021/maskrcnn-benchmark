@@ -13,6 +13,7 @@ def runKey(mode, output, dirr):
 		os.makedirs(save_dir)
 
 	its = list(sorted(output.keys()))
+	print(output[its[0]].keys())
 	server = []
 	for part in ['AP', 'AP50']:
 		for i in its:
