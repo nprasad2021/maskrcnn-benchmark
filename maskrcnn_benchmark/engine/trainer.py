@@ -34,7 +34,7 @@ def val(cfg, model, distributed):
     data_loaders_val = make_data_loader(cfg, is_train=False, is_distributed=distributed)
     output_tuple = {}
     for output_folder, dataset_name, data_loader_val in zip(output_folders, dataset_names, data_loaders_val):
-        print(dataset_name)
+        (dataset_name)
         result = inference(
             model,
             data_loader_val,
@@ -130,7 +130,7 @@ def do_train(
         eta_seconds = meters.time.global_avg * (max_iter - iteration)
         eta_string = str(datetime.timedelta(seconds=int(eta_seconds)))
 
-        if iteration % 20 == 0 or iteration == max_iter:
+        if iteration % 10 == 0 or iteration == max_iter:
             logger.info(
                 meters.delimiter.join(
                     [
