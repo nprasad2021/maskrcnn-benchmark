@@ -14,7 +14,6 @@ from maskrcnn_benchmark.engine.inference import inference
 from maskrcnn_benchmark.utils.miscellaneous import mkdir
 from maskrcnn_benchmark.data import make_data_loader
 from maskrcnn_benchmark.engine.plotMaps import plot
-from maskrcnn_benchmark.utils.comm import synchronize, get_rank
 
 def val(cfg, model, distributed):
     if distributed:
@@ -49,7 +48,7 @@ def val(cfg, model, distributed):
         output_tuple[dataset_name] = {}
         output_tuple[dataset_name]['AP'] = result['AP'].item()
         output_tuple[dataset_name]['AP50'] = result['AP50'].item()
-        synchronize()
+       
     return output_tuple
 
 def reduce_loss_dict(loss_dict):
