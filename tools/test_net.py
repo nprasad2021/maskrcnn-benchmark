@@ -87,6 +87,8 @@ def main():
             expected_results_sigma_tol=cfg.TEST.EXPECTED_RESULTS_SIGMA_TOL,
             output_folder=output_folder,
         )
+        print(results_final_0[0].results)
+        '''
         print(type(results_final_0))
         for ele in results_final_0:
             print("Type of element", type(ele))
@@ -98,7 +100,7 @@ def main():
         #print(results_final_0)
         with open(dataset_name + "results.pkl", "wb") as f:
             pickle.dump(results_final_0, f)
-
+        '''
         synchronize()
 
 
