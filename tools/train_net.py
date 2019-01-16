@@ -10,7 +10,6 @@ from maskrcnn_benchmark.utils.env import setup_environment  # noqa F401 isort:sk
 import argparse
 import os, shutil
 import sys
-print("System Paths: ", sys.path)
 
 import torch
 from maskrcnn_benchmark.config import cfg
@@ -29,9 +28,7 @@ from maskrcnn_benchmark.utils.miscellaneous import mkdir
 
 
 def train(cfg, local_rank, distributed):
-    if os.path.exists(cfg.OUTPUT_DIR):
-        shutil.rmtree(cfg.OUTPUT_DIR)
-        
+
     model = build_detection_model(cfg)
     device = torch.device(cfg.MODEL.DEVICE)
     model.to(device)
