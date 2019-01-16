@@ -89,6 +89,7 @@ def main():
         )
         print(type(results_final_0))
         for ele in results_final_0:
+            print("Type of element", type(ele))
             print(ele)
         print(results_final_0.keys())
         for key in results_final_0.keys():
