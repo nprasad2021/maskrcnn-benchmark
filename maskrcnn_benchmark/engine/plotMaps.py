@@ -26,10 +26,12 @@ def scatter(server, part, save_dir):
 	file_path = os.path.join(save_dir, part + "map.pdf")
 	plt.title("Accuracy over Time")
 	colors = ['r-', 'b', 'g']
-	print("All Training Modes", server.keys())
-	for i, mode in enumerate(server.keys()):
-		its, acc = zip(*server[mode])
-		plt.plot(its, acc, colors[(i%3)], label = mode.split("_")[1])
+	modes = list(server.keys())
+
+	print("All Training Modes", modes)
+	for i, mode in enumerate(modes):
+		its, acc = zip(*(server[mode]))
+		plt.plot(its, acc, colors[i], label = mode)#.split("_")[1])
 	plt.xlabel("Number of Training Iterations")
 	plt.ylabel("Classification Accuracy")
 	plt.legend()
