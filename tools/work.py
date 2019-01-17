@@ -17,7 +17,7 @@ from maskrcnn_benchmark.utils.logger import setup_logger
 from maskrcnn_benchmark.utils.miscellaneous import mkdir
 from maskrcnn_benchmark.engine.plotMaps import plot
 
-def inf(args, cfg):
+def inf(args, cfg, path):
 
     num_gpus = int(os.environ["WORLD_SIZE"]) if "WORLD_SIZE" in os.environ else 1
     distributed = num_gpus > 1
@@ -39,7 +39,7 @@ def inf(args, cfg):
     print("rumweight", cfg.MODEL.WEIGHT)
     model = build_detection_model(cfg)
     model.to(cfg.MODEL.DEVICE)
-
+    cfg.MODEl.WEIGHT = path
     output_dir = cfg.OUTPUT_DIR
     checkpointer = DetectronCheckpointer(cfg, model, save_dir=output_dir)
     _ = checkpointer.load(cfg.MODEL.WEIGHT)
@@ -129,7 +129,7 @@ def main():
         return "no arguments here"
     r = "mAP50: " + str(args.iter) + "    -     "
     cfg.MODEL.WEIGHT = realPath
-    print(r, inf(args, cfg))
+    print(r, inf(args, cfg, realpath))
 
 if __name__ == "__main__":
     main()
