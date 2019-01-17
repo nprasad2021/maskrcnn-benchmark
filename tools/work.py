@@ -1,5 +1,5 @@
 from maskrcnn_benchmark.utils.env import setup_environment  # noqa F401 isort:skip
-import os, sys
+import os, sys, argparse
 
 from os import listdir
 from os.path import isfile, join
