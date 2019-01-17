@@ -38,7 +38,7 @@ def inf(args, cfg):
 
     logger.info("Collecting env info (might take some time)")
     logger.info("\n" + collect_env_info())
-
+    print(cfg.MODEL.WEIGHT)
     model = build_detection_model(cfg)
     model.to(cfg.MODEL.DEVICE)
 
