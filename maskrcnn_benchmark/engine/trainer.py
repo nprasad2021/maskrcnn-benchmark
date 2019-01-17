@@ -13,43 +13,8 @@ from maskrcnn_benchmark.utils.metric_logger import MetricLogger
 from maskrcnn_benchmark.engine.inference import inference
 from maskrcnn_benchmark.utils.miscellaneous import mkdir
 from maskrcnn_benchmark.data import make_data_loader
-from maskrcnn_benchmark.engine.plotMaps import plot
 
-def val(cfg, model, distributed=False):
-    if distributed:
-        model = model.module
-    torch.cuda.empty_cache()  # TODO check if it helps
-    iou_types = ("bbox",)
-    if cfg.MODEL.MASK_ON:
-        iou_types = iou_types + ("segm",)
-    output_folders = [None] * (len(cfg.DATASETS.TEST) + len(cfg.DATASETS.TRAIN))
-    dataset_names = cfg.DATASETS.TEST + cfg.DATASETS.TRAIN
-    if cfg.OUTPUT_DIR:
-        for idx, dataset_name in enumerate(dataset_names):
-            print(dataset_name)
-            output_folder = os.path.join(cfg.OUTPUT_DIR, "inference", dataset_name)
-            mkdir(output_folder)
-            output_folders[idx] = output_folder
-    data_loaders_val = make_data_loader(cfg, is_train=False, is_distributed=distributed)
-    output_tuple = {}
-    for output_folder, dataset_name, data_loader_val in zip(output_folders, dataset_names, data_loaders_val):
-        (dataset_name)
-        result = inference(
-            model,
-            data_loader_val,
-            dataset_name=dataset_name,
-            iou_types=iou_types,
-            box_only=cfg.MODEL.RPN_ONLY,
-            device=cfg.MODEL.DEVICE,
-            expected_results=cfg.TEST.EXPECTED_RESULTS,
-            expected_results_sigma_tol=cfg.TEST.EXPECTED_RESULTS_SIGMA_TOL,
-            output_folder=output_folder,
-        )[0].results['bbox']
-        output_tuple[dataset_name] = {}
-        output_tuple[dataset_name]['AP'] = result['AP'].item()
-        output_tuple[dataset_name]['AP50'] = result['AP50'].item()
-       
-    return output_tuple
+
 
 def reduce_loss_dict(loss_dict):
     """
@@ -97,7 +62,7 @@ def do_train(
     model.train()
     start_training_time = time.time()
     end = time.time()
-    output = {}
+   
     for iteration, (images, targets, _) in enumerate(data_loader, start_iter):
 
         data_time = time.time() - end
@@ -148,16 +113,12 @@ def do_train(
             )
         if iteration % checkpoint_period == 0:
             checkpointer.save("model_{:07d}".format(iteration), **arguments)
-            print("ENTER VALIDATION CALCULATIONS")
-            output[iteration] = val(cfg, model, distributed)
 
         if iteration == max_iter:
             checkpointer.save("model_final", **arguments)
-            output[iteration] = val(cfg, model, distributed)
 
     total_training_time = time.time() - start_training_time
     total_time_str = str(datetime.timedelta(seconds=total_training_time))
-    plot(output, cfg)
 
     logger.info(
         "Total training time: {} ({:.4f} s / it)".format(

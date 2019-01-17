@@ -1,6 +1,3 @@
-# Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
-# Set up custom environment before nearly anything else is imported
-# NOTE: this should be the first import (no not reorder)
 from maskrcnn_benchmark.utils.env import setup_environment  # noqa F401 isort:skip
 
 import argparse
@@ -22,23 +19,7 @@ from maskrcnn_benchmark.utils.logger import setup_logger
 from maskrcnn_benchmark.utils.miscellaneous import mkdir
 from maskrcnn_benchmark.engine.plotMaps import plot
 
-def inf(model_path=None):
-    parser = argparse.ArgumentParser(description="PyTorch Object Detection Inference")
-    parser.add_argument(
-        "--config-file",
-        default="/home/nprasad/Documents/github/maskrcnn-benchmark/configs/heads.yaml",
-        metavar="FILE",
-        help="path to config file",
-    )
-    parser.add_argument("--local_rank", type=int, default=0)
-    parser.add_argument(
-        "opts",
-        help="Modify config options using the command-line",
-        default=None,
-        nargs=argparse.REMAINDER,
-    )
-
-    args = parser.parse_args()
+def inf(args, cfg):
 
     num_gpus = int(os.environ["WORLD_SIZE"]) if "WORLD_SIZE" in os.environ else 1
     distributed = num_gpus > 1
@@ -49,13 +30,7 @@ def inf(model_path=None):
             backend="nccl", init_method="env://"
         )
 
-    cfg.merge_from_file(args.config_file)
-    cfg.merge_from_list(args.opts)
-    if not model_path is None:
-        cfg.MODEL.WEIGHT = model_path
-    cfg.freeze()
-
-    save_dir = "./results/test"
+    save_dir = "./results/testInf"
     mkdir(save_dir)
     logger = setup_logger("maskrcnn_benchmark", save_dir, get_rank())
     logger.info("Using {} GPUs".format(num_gpus))
@@ -74,8 +49,8 @@ def inf(model_path=None):
     iou_types = ("bbox",)
     if cfg.MODEL.MASK_ON:
         iou_types = iou_types + ("segm",)
-    output_folders = [None] * len(cfg.DATASETS.TEST)
-    dataset_names = cfg.DATASETS.TEST
+    output_folders = [None] * (len(cfg.DATASETS.TEST) + len(cfg.DATASETS.TRAIN))
+    dataset_names = cfg.DATASETS.TEST + cfg.DATASETS.TRAIN
     if cfg.OUTPUT_DIR:
         for idx, dataset_name in enumerate(dataset_names):
             output_folder = os.path.join(cfg.OUTPUT_DIR, "inference", dataset_name)
@@ -103,7 +78,21 @@ def inf(model_path=None):
         synchronize()
     return output_tuple
 
-def main(model_path=None):
+def recordResults(args, cfg):
+    homeDir = "/home/nprasad/Documents/github/maskrcnn-benchmark"
+    model_paths = get_model_paths(join(homeDir, cfg.OUTPUT_DIR))
+    output = {}
+    for path in model_paths:
+        cfg.MODEL.WEIGHT = path
+        ite = int(path.split("_")[1].split(".")[0])
+        output[ite] = inf(args, cfg)
+    plot(output, cfg)
+
+def get_model_paths(directory):
+    onlyfiles = [f for f in listdir(directory) if isfile(join(directory, f))]
+    return [join(directory, file) for file in onlyfiles if ".pth" in file]
+
+def main():
     parser = argparse.ArgumentParser(description="PyTorch Object Detection Inference")
     parser.add_argument(
         "--config-file",
@@ -121,67 +110,9 @@ def main(model_path=None):
 
     args = parser.parse_args()
 
-    num_gpus = int(os.environ["WORLD_SIZE"]) if "WORLD_SIZE" in os.environ else 1
-    distributed = num_gpus > 1
-
-    if distributed:
-        torch.cuda.set_device(args.local_rank)
-        torch.distributed.init_process_group(
-            backend="nccl", init_method="env://"
-        )
-
     cfg.merge_from_file(args.config_file)
     cfg.merge_from_list(args.opts)
-    if not model_path is None:
-        cfg.MODEL.WEIGHT = model_path
-    cfg.freeze()
-
-    save_dir = "./results/test"
-    mkdir(save_dir)
-    logger = setup_logger("maskrcnn_benchmark", save_dir, get_rank())
-    logger.info("Using {} GPUs".format(num_gpus))
-    logger.info(cfg)
-
-    logger.info("Collecting env info (might take some time)")
-    logger.info("\n" + collect_env_info())
-
-    model = build_detection_model(cfg)
-    model.to(cfg.MODEL.DEVICE)
-
-    output_dir = cfg.OUTPUT_DIR
-    checkpointer = DetectronCheckpointer(cfg, model, save_dir=output_dir)
-    _ = checkpointer.load(cfg.MODEL.WEIGHT)
-
-    iou_types = ("bbox",)
-    if cfg.MODEL.MASK_ON:
-        iou_types = iou_types + ("segm",)
-    output_folders = [None] * len(cfg.DATASETS.TEST)
-    dataset_names = cfg.DATASETS.TEST
-    if cfg.OUTPUT_DIR:
-        for idx, dataset_name in enumerate(dataset_names):
-            output_folder = os.path.join(cfg.OUTPUT_DIR, "inference", dataset_name)
-            mkdir(output_folder)
-            output_folders[idx] = output_folder
-    data_loaders_val = make_data_loader(cfg, is_train=False, is_distributed=distributed)
-    output_tuple = {}
-    for output_folder, dataset_name, data_loader_val in zip(output_folders, dataset_names, data_loaders_val):
-        inference(
-            model,
-            data_loader_val,
-            dataset_name=dataset_name,
-            iou_types=iou_types,
-            box_only=cfg.MODEL.RPN_ONLY,
-            device=cfg.MODEL.DEVICE,
-            expected_results=cfg.TEST.EXPECTED_RESULTS,
-            expected_results_sigma_tol=cfg.TEST.EXPECTED_RESULTS_SIGMA_TOL,
-            output_folder=output_folder,
-        )
-
-
-
-        synchronize()
-
-
+    recordResults(args, cfg)
 
 if __name__ == "__main__":
     main()
