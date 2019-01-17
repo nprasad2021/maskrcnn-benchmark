@@ -5,7 +5,7 @@ from collections import defaultdict
 
 
 def plot(output, cfg):
-	dsts = cfg.DATASETS.TEST + cfg.DATASETS.TRAIN
+	dsts = cfg.DATASETS.TEST #+ cfg.DATASETS.TRAIN
 	save_dir = cfg.OUTPUT_DIR
 	if not os.path.exists(save_dir):
 		os.makedirs(save_dir)
