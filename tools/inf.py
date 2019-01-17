@@ -82,6 +82,7 @@ def inf(args, cfg):
 def recordResults(args, cfg):
     homeDir = "/home/nprasad/Documents/github/maskrcnn-benchmark"
     initial_paths = [cfg.MODEL.WEIGHT]
+    print("PATHS", get_model_paths(join(homeDir, cfg.OUTPUT_DIR)))
     model_paths = initial_paths.extend(get_model_paths(join(homeDir, cfg.OUTPUT_DIR)))
     output = {}
     for path in model_paths:
