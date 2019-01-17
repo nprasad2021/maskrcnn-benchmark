@@ -49,8 +49,9 @@ def inf(args, cfg):
     iou_types = ("bbox",)
     if cfg.MODEL.MASK_ON:
         iou_types = iou_types + ("segm",)
-    output_folders = [None] * (len(cfg.DATASETS.TEST) + len(cfg.DATASETS.TRAIN))
-    dataset_names = cfg.DATASETS.TEST + cfg.DATASETS.TRAIN
+    output_folders = [None] * len(cfg.DATASETS.TEST) 
+    dataset_names = cfg.DATASETS.TEST
+    print("Dataset Names", dataset_names)
     if cfg.OUTPUT_DIR:
         for idx, dataset_name in enumerate(dataset_names):
             output_folder = os.path.join(cfg.OUTPUT_DIR, "inference", dataset_name)
