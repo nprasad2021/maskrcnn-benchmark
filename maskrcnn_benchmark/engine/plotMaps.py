@@ -38,4 +38,5 @@ def scatter(server, part, save_dir):
 	plt.ylabel("Classification Accuracy")
 	plt.legend()
 	plt.savefig(file_path, dvi=1000)
+	plt.close()
 	print("SAVED PDF OF RESULTS")
