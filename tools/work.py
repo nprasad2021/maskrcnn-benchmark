@@ -126,3 +126,6 @@ def main():
     r = "mAP50: " + str(numIter) + "    -     "
     print(r, roger(realPath))
 
+if __name__ == "__main__":
+    main()
+
