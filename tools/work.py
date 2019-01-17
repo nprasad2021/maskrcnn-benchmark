@@ -127,7 +127,7 @@ def main():
             break
     if realPath is None:
         return "no arguments here"
-    r = "mAP50: " + str(numIter) + "    -     "
+    r = "mAP50: " + str(args.iter) + "    -     "
     cfg.MODEL.WEIGHT = realPath
     print(r, inf(args, cfg))
 
