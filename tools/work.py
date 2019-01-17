@@ -129,7 +129,7 @@ def main():
         return "no arguments here"
     r = "mAP50: " + str(args.iter) + "    -     "
     cfg.MODEL.WEIGHT = realPath
-    print(r, inf(args, cfg, realpath))
+    print(r, inf(args, cfg, realPath))
 
 if __name__ == "__main__":
     main()
