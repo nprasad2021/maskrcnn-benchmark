@@ -38,7 +38,7 @@ def inf(args, cfg):
 
     logger.info("Collecting env info (might take some time)")
     logger.info("\n" + collect_env_info())
-    print(cfg.MODEL.WEIGHT)
+    print("rumweight", cfg.MODEL.WEIGHT)
     model = build_detection_model(cfg)
     model.to(cfg.MODEL.DEVICE)
 
@@ -76,7 +76,7 @@ def inf(args, cfg):
         output_tuple[dataset_name]['AP'] = r['AP'].item()
         output_tuple[dataset_name]['AP50'] = r['AP50'].item()
 
-        synchronize()
+        
     return output_tuple
 
 def recordResults(args, cfg):
