@@ -39,7 +39,7 @@ def inf(args, cfg, path):
     print("rumweight", cfg.MODEL.WEIGHT)
     model = build_detection_model(cfg)
     model.to(cfg.MODEL.DEVICE)
-    cfg.MODEl.WEIGHT = path
+    cfg.MODEL.WEIGHT = path
     output_dir = cfg.OUTPUT_DIR
     checkpointer = DetectronCheckpointer(cfg, model, save_dir=output_dir)
     _ = checkpointer.load(cfg.MODEL.WEIGHT)
