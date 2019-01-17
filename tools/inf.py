@@ -30,7 +30,7 @@ def inf(args, cfg):
             backend="nccl", init_method="env://"
         )
 
-    save_dir = "./results/testInf"
+    save_dir = os.path.join(cfg.OUTPUT_DIR, "testInf")
     mkdir(save_dir)
     logger = setup_logger("maskrcnn_benchmark", save_dir, get_rank())
     logger.info("Using {} GPUs".format(num_gpus))
@@ -81,12 +81,14 @@ def inf(args, cfg):
 
 def recordResults(args, cfg):
     homeDir = "/home/nprasad/Documents/github/maskrcnn-benchmark"
-    model_paths = get_model_paths(join(homeDir, cfg.OUTPUT_DIR))
+    model_paths = [cfg.MODEL.WEIGHT].extend(get_model_paths(join(homeDir, cfg.OUTPUT_DIR)))
     output = {}
     for path in model_paths:
         cfg.MODEL.WEIGHT = path
         if "final" in path:
             ite = cfg.SOLVER.MAX_ITER
+        elif "no" in path:
+            ite = 0
         else:
             ite = int(path.split("_")[1].split(".")[0])
         output[ite] = inf(args, cfg)
