@@ -5,7 +5,7 @@ from os.path import isfile, join
 
 def main():
     homeDir = "/home/nprasad/Documents/github/maskrcnn-benchmark"
-    model_paths = [cfg.MODEL.WEIGHT] + get_model_paths(join(homeDir, cfg.OUTPUT_DIR))
+    model_paths = ["../pretrained_models/fastercnnmodel_no_last_layers.pth"] + get_model_paths(join(homeDir, cfg.OUTPUT_DIR))
     output = {}
     for path in model_paths:
     	ite, output = run(model_path)
