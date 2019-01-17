@@ -79,26 +79,20 @@ def inf(args, cfg):
         
     return output_tuple
 
-def recordResults(args, cfg):
-    homeDir = "/home/nprasad/Documents/github/maskrcnn-benchmark"
-    model_paths = [cfg.MODEL.WEIGHT] + get_model_paths(join(homeDir, cfg.OUTPUT_DIR))
-    output = {}
-    for path in model_paths:
-        cfg.MODEL.WEIGHT = path
-        if "final" in path:
-            ite = cfg.SOLVER.MAX_ITER
-        elif "no" in path:
-            ite = 0
-        else:
-            ite = int(path.split("_")[1].split(".")[0])
-        output[ite] = inf(args, cfg)
-    plot(output, cfg)
+def recordResults(args, cfg, model_path):
+    path = model_path
+    cfg.MODEL.WEIGHT = path
+    if "final" in path:
+        ite = cfg.SOLVER.MAX_ITER
+    elif "no" in path:
+        ite = 0
+    else:
+        ite = int(path.split("_")[1].split(".")[0])
+    return ite, inf(args, cfg)
 
-def get_model_paths(directory):
-    onlyfiles = [f for f in listdir(directory) if isfile(join(directory, f))]
-    return [join(directory, file) for file in onlyfiles if ".pth" in file]
 
-def main():
+
+def main(model_path):
     parser = argparse.ArgumentParser(description="PyTorch Object Detection Inference")
     parser.add_argument(
         "--config-file",
@@ -118,7 +112,7 @@ def main():
 
     cfg.merge_from_file(args.config_file)
     cfg.merge_from_list(args.opts)
-    recordResults(args, cfg)
+    return recordResults(args, cfg, model_path)
 
 if __name__ == "__main__":
     main()
