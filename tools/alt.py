@@ -9,7 +9,7 @@ def main():
     model_paths = [cfg.MODEL.WEIGHT] + get_model_paths(join(homeDir, cfg.OUTPUT_DIR))
     output = {}
     for path in model_paths:
-    	ite, output = run(model_path)
+    	ite, output = run(path)
     	output[ite] = output
 
     from maskrcnn_benchmark.engine.plotMaps import plot
