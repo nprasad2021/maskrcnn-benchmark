@@ -14,8 +14,9 @@ def plot(output, cfg):
 	its = list(sorted(output.keys()))
 	print("Number of iterations saved:", len(its))
 	print("Datasets", output[its[0]].keys())
-	server = defaultdict(list)
+	
 	for part in ['AP', 'AP50']:
+		server = defaultdict(list)
 		for i in its:
 			for mode in dsts:
 				outset = output[i][mode][part]
@@ -31,6 +32,7 @@ def scatter(server, part, save_dir):
 	print("All Training Modes", modes)
 	for i, mode in enumerate(modes):
 		its, acc = zip(*(server[mode]))
+		#print(its, acc, mode)
 		plt.plot(its, acc, colors[i], label = mode)#.split("_")[1])
 	plt.xlabel("Number of Training Iterations")
 	plt.ylabel("Classification Accuracy")
