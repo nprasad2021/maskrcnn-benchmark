@@ -39,4 +39,4 @@ def scatter(server, part, save_dir):
 	plt.legend()
 	plt.savefig(file_path, dvi=1000)
 	plt.close()
-	print("SAVED PDF OF RESULTS")
+	print("SAVED PDF OF RESULTS", file_path)
