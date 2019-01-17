@@ -25,8 +25,8 @@ def get_model_paths(directory):
 
 def getCFG():
 	from maskrcnn_benchmark.config import cfg
-    cfg.merge_from_file("/home/nprasad/Documents/github/maskrcnn-benchmark/configs/heads.yaml")
-    return cfg
+	cfg.merge_from_file("/home/nprasad/Documents/github/maskrcnn-benchmark/configs/heads.yaml")
+	return cfg
 
 
 if __name__ == "__main__":
