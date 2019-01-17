@@ -82,13 +82,18 @@ def get_model_paths(directory):
     onlyfiles = [f for f in listdir(directory) if isfile(join(directory, f))]
     return [join(directory, file) for file in onlyfiles if ".pth" in file]
 
-def getCFG():
-    from maskrcnn_benchmark.config import cfg as cfgd
-    cfgd.merge_from_file("/home/nprasad/Documents/github/maskrcnn-benchmark/configs/heads.yaml")
-    return cfgd
 
-def roger(model_path):
+
+
+def main():
+
     parser = argparse.ArgumentParser(description="PyTorch Object Detection Inference")
+    parser.add_argument(
+        "--iter",
+        default="50",
+        metavar="FILE",
+        help="path to config file",
+    )
     parser.add_argument(
         "--config-file",
         default="/home/nprasad/Documents/github/maskrcnn-benchmark/configs/heads.yaml",
@@ -103,28 +108,27 @@ def roger(model_path):
         nargs=argparse.REMAINDER,
     )
 
-    args = parser.parse_args()
 
+
+    args = parser.parse_args()
+ 
     cfg.merge_from_file(args.config_file)
     cfg.merge_from_list(args.opts)
     cfg.MODEL.WEIGHT = path
-    return inf(args, cfg)
-
-def main():
-    numIter = sys.argv[1]
+    
 
     homeDir = "/home/nprasad/Documents/github/maskrcnn-benchmark"
-    cfgd = getCFG()
-    model_paths = [cfg.MODEL.WEIGHT] + get_model_paths(join(homeDir, cfgd.OUTPUT_DIR))
+ 
+    model_paths = [cfg.MODEL.WEIGHT] + get_model_paths(join(homeDir, cfg.OUTPUT_DIR))
     realPath = None
     for path in model_paths:
-        if numIter in path:
+        if args.iter in path:
             realPath = path
             break
     if realPath is None:
         return "no arguments here"
     r = "mAP50: " + str(numIter) + "    -     "
-    print(r, roger(realPath))
+    print(r, inf(args, cfg))
 
 if __name__ == "__main__":
     main()
