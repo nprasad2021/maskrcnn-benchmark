@@ -114,7 +114,7 @@ def main():
  
     cfg.merge_from_file(args.config_file)
     cfg.merge_from_list(args.opts)
-    cfg.MODEL.WEIGHT = path
+    
     
 
     homeDir = "/home/nprasad/Documents/github/maskrcnn-benchmark"
@@ -128,6 +128,7 @@ def main():
     if realPath is None:
         return "no arguments here"
     r = "mAP50: " + str(numIter) + "    -     "
+    cfg.MODEL.WEIGHT = realPath
     print(r, inf(args, cfg))
 
 if __name__ == "__main__":
