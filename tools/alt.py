@@ -7,13 +7,13 @@ def main():
     homeDir = "/home/nprasad/Documents/github/maskrcnn-benchmark"
     cfg = getCFG()
     model_paths = [cfg.MODEL.WEIGHT] + get_model_paths(join(homeDir, cfg.OUTPUT_DIR))
-    output = {}
+    outputDict = {}
     for path in model_paths:
     	ite, output = run(path)
-    	output[ite] = output
+    	outputDict[ite] = output
 
     from maskrcnn_benchmark.engine.plotMaps import plot
-    plot(output, cfg)
+    plot(outputDict, cfg)
 
 def run(model_path):
 	import inf
