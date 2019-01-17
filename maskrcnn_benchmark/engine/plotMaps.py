@@ -5,6 +5,7 @@ from collections import defaultdict
 
 
 def plot(output, cfg):
+
 	dsts = cfg.DATASETS.TEST #+ cfg.DATASETS.TRAIN
 	save_dir = cfg.OUTPUT_DIR
 	if not os.path.exists(save_dir):
@@ -12,6 +13,7 @@ def plot(output, cfg):
 
 	its = list(sorted(output.keys()))
 	print("Number of iterations saved:", len(its))
+	print("Datasets", output[its[0]].keys())
 	server = defaultdict(list)
 	for part in ['AP', 'AP50']:
 		for i in its:
@@ -30,3 +32,4 @@ def scatter(server, part, save_dir):
 	plt.ylabel("Classification Accuracy")
 	plt.legend()
 	plt.savefig(file_path, dvi=1000)
+	print("SAVED PDF OF RESULTS")
