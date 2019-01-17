@@ -15,7 +15,7 @@ from maskrcnn_benchmark.utils.miscellaneous import mkdir
 from maskrcnn_benchmark.data import make_data_loader
 from maskrcnn_benchmark.engine.plotMaps import plot
 
-def val(cfg, model, distributed):
+def val(cfg, model, distributed=False):
     if distributed:
         model = model.module
     torch.cuda.empty_cache()  # TODO check if it helps
