@@ -84,7 +84,10 @@ def recordResults(args, cfg):
     output = {}
     for path in model_paths:
         cfg.MODEL.WEIGHT = path
-        ite = int(path.split("_")[1].split(".")[0])
+        if "final" in path:
+            ite = cfg.SOLVER.MAX_ITER
+        else:
+            ite = int(path.split("_")[1].split(".")[0])
         output[ite] = inf(args, cfg)
     plot(output, cfg)
 
