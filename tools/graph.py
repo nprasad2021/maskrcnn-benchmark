@@ -82,7 +82,8 @@ def inf(args, cfg):
 def recordResults(args, cfg):
     homeDir = "/home/nprasad/Documents/github/maskrcnn-benchmark"
     model_paths = [cfg.MODEL.WEIGHT] + get_model_paths(join(homeDir, cfg.OUTPUT_DIR))
-    cfg.OUTPUT_DIR = cfg.OUTPUT_DIR.replace("train", "test")
+    if (not "output" in cfg.OUTPUT_DIR) and (not "test" in cfg.OUTPUT_DIR):
+        cfg.OUTPUT_DIR = os.path.join("output", "test", cfg.OUTPUT_DIR)
     if not os.path.exists(cfg.OUTPUT_DIR):
         os.makedirs(cfg.OUTPUT_DIR)
     output = {}

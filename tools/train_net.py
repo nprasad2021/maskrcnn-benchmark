@@ -155,6 +155,8 @@ def main():
 
     cfg.merge_from_file(args.config_file)
     cfg.merge_from_list(args.opts)
+    if (not "output" in cfg.OUTPUT_DIR) and (not "train" in cfg.OUTPUT_DIR):
+        cfg.OUTPUT_DIR = os.path.join("output", "train", cfg.OUTPUT_DIR)
     cfg.freeze()
 
     output_dir = cfg.OUTPUT_DIR

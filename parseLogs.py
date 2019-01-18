@@ -1,23 +1,28 @@
 import os, argparse, sys
 import matplotlib.pyplot as plt
+from maskrcnn_benchmark.config import cfg
 
 parser = argparse.ArgumentParser(description="Parameters for Logs Parsing")
 
+
 parser.add_argument(
-    "--logfile",
-    default="./log.txt",
-    help="path to load heads data",
-    type=str,
+    "--config-file",
+    default="/home/nprasad/Documents/github/maskrcnn-benchmark/configs/heads.yaml",
+    metavar="FILE",
+    help="path to config file",
 )
 
 args = parser.parse_args()
-inputFileName = args.logfile
+
+cfg.merge_from_file(args.config_file)
+if (not "output" in cfg.OUTPUT_DIR) and (not "train" in cfg.OUTPUT_DIR):
+    cfg.OUTPUT_DIR = os.path.join("output", "train", cfg.OUTPUT_DIR)
+inputFileName = os.path.join(cfg.OUTPUT_DIR, "logs.txt")
 
 def read(filename):
     if not os.path.exists(inputFileName):
         print("Input file does not exist")
         quit()
-
     with open(inputFileName, "r") as f:
         lines = f.readlines()
     return lines
@@ -62,7 +67,8 @@ def plot(x, y, save_path, title="Loss"):
     plt.savefig(save_path, dvi=1000)
 
 
-def parse(filename, save_path):
+def parse(filename):
+    save_path = cfg.OUTPUT_DIR.replace("train", "test")
     if not os.path.exists(save_path):
         os.makedirs(save_path)
     final_address = os.path.join(save_path, "train_loss.pdf")
@@ -72,7 +78,7 @@ def parse(filename, save_path):
 
 
 if __name__ == "__main__":
-    parse(inputFileName, "./results")
+    parse(inputFileName)
 
 
 
