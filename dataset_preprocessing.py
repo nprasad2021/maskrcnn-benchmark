@@ -42,6 +42,13 @@ parser.add_argument(
     type=int,
 )
 
+parser.add_argument(
+    "--freeze",
+    default=True,
+    help="to calculate test",
+    type=bool,
+)
+
 
 args = parser.parse_args()
 
@@ -58,7 +65,10 @@ annotationDir = os.path.join(outDir, "annotations")
 if os.path.exists(outDir):
     shutil.rmtree(outDir)
 makeDirectory(outDir)
-for stage in ['test', 'train', 'val']:
+all_stages = ['train', 'val']
+if not args.freeze:
+    all_stages.append("test")
+for stage in all_stages:
     makeDirectory(os.path.join(outDir, stage))
 makeDirectory(annotationDir)
 
@@ -212,7 +222,7 @@ def main():
     imgCount = 0
     annotationCount = 0
     
-    for stage in ['test', 'train', 'val']:
+    for stage in all_stages:
         image_annotations = []
         object_annotations = []
         
