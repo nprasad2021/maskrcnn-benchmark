@@ -1,7 +1,8 @@
-import train_net
+
 
 def main():
-	parser = argparse.ArgumentParser(description="PyTorch Object Detection Training")
+    import train_net
+    parser = argparse.ArgumentParser(description="PyTorch Object Detection Training")
     parser.add_argument(
         "--config-file",
         default="/home/nprasad/Documents/github/maskrcnn-benchmark/configs/heads.yaml",
@@ -25,9 +26,9 @@ def main():
     )
 
     args = parser.parse_args()
-	lrs = [0.1, 0.01, 0.001, 0.0001]
-	for lr in lrs:
-		train_net.main(args, lr)
+    lrs = [0.1, 0.01, 0.001, 0.0001]
+    for lr in lrs:
+    train_net.main(args, lr)
 
 if __name__ == "__main__":
-	main()
+    main()
