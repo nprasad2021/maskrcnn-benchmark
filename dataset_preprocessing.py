@@ -21,11 +21,33 @@ parser.add_argument(
     type=str,
 )
 
+parser.add_argument(
+    "--train",
+    default="1200",
+    help="number of training examples",
+    type=int,
+)
+
+parser.add_argument(
+    "--test",
+    default="200",
+    help="number of testing examples",
+    type=int,
+)
+
+parser.add_argument(
+    "--val",
+    default="200",
+    help="number of validation examples",
+    type=int,
+)
+
+
 args = parser.parse_args()
 
 gridSizes = [1] #[1, 3, 5, 7]
 visualize = False
-numImages = {'train':50, 'test':10, 'val':10}
+numImages = {'train':args.train, 'test':args.test, 'val':args.val}
 verbose = True
 
 rawDataDir = args.origin
