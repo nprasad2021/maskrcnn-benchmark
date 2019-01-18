@@ -38,7 +38,7 @@ def inf(args, cfg):
 
     logger.info("Collecting env info (might take some time)")
     logger.info("\n" + collect_env_info())
-    print("rumweight", cfg.MODEL.WEIGHT)
+    print(cfg.MODEL.WEIGHT)
     model = build_detection_model(cfg)
     model.to(cfg.MODEL.DEVICE)
 
@@ -76,22 +76,29 @@ def inf(args, cfg):
         output_tuple[dataset_name]['AP'] = r['AP'].item()
         output_tuple[dataset_name]['AP50'] = r['AP50'].item()
 
-        
+        synchronize()
     return output_tuple
 
-def recordResults(args, cfg, model_path):
-    path = model_path
-    if "final" in path:
-        ite = cfg.SOLVER.MAX_ITER
-    elif "no" in path:
-        ite = 0
-    else:
-        ite = int(path.split("_")[1].split(".")[0])
-    return ite, inf(args, cfg)
+def recordResults(args, cfg):
+    homeDir = "/home/nprasad/Documents/github/maskrcnn-benchmark"
+    model_paths = [cfg.MODEL.WEIGHT] + get_model_paths(join(homeDir, cfg.OUTPUT_DIR))
+    output = {}
+    for path in model_paths:
+        cfg.MODEL.WEIGHT = path
+        if "final" in path:
+            ite = cfg.SOLVER.MAX_ITER
+        elif "no" in path:
+            ite = 0
+        else:
+            ite = int(path.split("_")[1].split(".")[0])
+        output[ite] = inf(args, cfg)
+    plot(output, cfg)
 
+def get_model_paths(directory):
+    onlyfiles = [f for f in listdir(directory) if isfile(join(directory, f))]
+    return [join(directory, file) for file in onlyfiles if ".pth" in file]
 
-
-def main(model_path):
+def main():
     parser = argparse.ArgumentParser(description="PyTorch Object Detection Inference")
     parser.add_argument(
         "--config-file",
@@ -111,8 +118,12 @@ def main(model_path):
 
     cfg.merge_from_file(args.config_file)
     cfg.merge_from_list(args.opts)
-    cfg.MODEL.WEIGHT = path
-    return recordResults(args, cfg, model_path)
+    arr = cfg.OUTPUT_DIR.split("/")
+    arr[2] = 'test'
+    cfg.OUTPUT_DIR = "/".join(arr)
+    if not os.path.exists(cfg.OUTPUT_DIR):
+        os.makedirs(cfg.OUTPUT_DIR)
+    recordResults(args, cfg)
 
 if __name__ == "__main__":
     main()
