@@ -28,7 +28,7 @@ def main():
     args = parser.parse_args()
     lrs = [0.1, 0.01, 0.001, 0.0001]
     for lr in lrs:
-    train_net.main(args, lr)
+        train_net.main(args, lr)
 
 if __name__ == "__main__":
     main()
