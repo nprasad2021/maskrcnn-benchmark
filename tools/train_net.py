@@ -1,5 +1,5 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
-r"""
+"""
 Basic training script for PyTorch
 """
 
@@ -110,39 +110,8 @@ def test(cfg, model, distributed):
         synchronize()
 
 
-def main():
-    parser = argparse.ArgumentParser(description="PyTorch Object Detection Training")
-    parser.add_argument(
-        "--config-file",
-        default="/home/nprasad/Documents/github/maskrcnn-benchmark/configs/heads.yaml",
-        metavar="FILE",
-        help="path to config file",
-        type=str,
-    )
+def main(args, lr=None):
 
-    parser.add_argument(
-        "--output-dir",
-        default="./results",
-        metavar="FILE",
-        help="path to results dir",
-        type=str,
-    )
-
-    parser.add_argument("--local_rank", type=int, default=0)
-    parser.add_argument(
-        "--skip-test",
-        dest="skip_test",
-        help="Do not test the final model",
-        action="store_true",
-    )
-    parser.add_argument(
-        "opts",
-        help="Modify config options using the command-line",
-        default=None,
-        nargs=argparse.REMAINDER,
-    )
-
-    args = parser.parse_args()
 
     num_gpus = int(os.environ["WORLD_SIZE"]) if "WORLD_SIZE" in os.environ else 1
     args.distributed = num_gpus > 1
@@ -155,6 +124,9 @@ def main():
 
     cfg.merge_from_file(args.config_file)
     cfg.merge_from_list(args.opts)
+    if not lr is None:
+        cfg.SOLVER.BASE_LR = lr
+    cfg.OUTPUT_DIR = os.path.join(cfg.OUTPUT_DIR, str(lr))
     if (not "output" in cfg.OUTPUT_DIR) and (not "train" in cfg.OUTPUT_DIR):
         cfg.OUTPUT_DIR = os.path.join("output", "train", cfg.OUTPUT_DIR)
     cfg.freeze()
@@ -183,4 +155,28 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="PyTorch Object Detection Training")
+    parser.add_argument(
+        "--config-file",
+        default="/home/nprasad/Documents/github/maskrcnn-benchmark/configs/heads.yaml",
+        metavar="FILE",
+        help="path to config file",
+        type=str,
+    )
+
+    parser.add_argument("--local_rank", type=int, default=0)
+    parser.add_argument(
+        "--skip-test",
+        dest="skip_test",
+        help="Do not test the final model",
+        action="store_true",
+    )
+    parser.add_argument(
+        "opts",
+        help="Modify config options using the command-line",
+        default=None,
+        nargs=argparse.REMAINDER,
+    )
+
+    args = parser.parse_args()
+    main(args)
