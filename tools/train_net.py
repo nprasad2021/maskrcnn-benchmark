@@ -149,7 +149,7 @@ def main(args, lr=None, skip_test=False):
 
     model = train(cfg, args.local_rank, args.distributed)
 
-    if not (args.skip_test) and (not skip_test):
+    if (not args.skip_test) and (not skip_test):
         test(cfg, model, args.distributed)
 
 
