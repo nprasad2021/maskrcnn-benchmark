@@ -12,7 +12,7 @@ import os, shutil
 import sys
 
 import torch
-from maskrcnn_benchmark.config import cfg
+from maskrcnn_benchmark.config import cfg as c
 from maskrcnn_benchmark.data import make_data_loader
 from maskrcnn_benchmark.solver import make_lr_scheduler
 from maskrcnn_benchmark.solver import make_optimizer
@@ -112,7 +112,7 @@ def test(cfg, model, distributed):
 
 def main(args, lr=None):
 
-
+    cfg = c.clone()
     num_gpus = int(os.environ["WORLD_SIZE"]) if "WORLD_SIZE" in os.environ else 1
     args.distributed = num_gpus > 1
 
@@ -127,8 +127,7 @@ def main(args, lr=None):
     if not lr is None:
         cfg.SOLVER.BASE_LR = lr
     cfg.OUTPUT_DIR = os.path.join(cfg.OUTPUT_DIR, str(lr))
-    if (not "output" in cfg.OUTPUT_DIR) and (not "train" in cfg.OUTPUT_DIR):
-        cfg.OUTPUT_DIR = os.path.join("output", "train", cfg.OUTPUT_DIR)
+    cfg.OUTPUT_DIR = os.path.join("output", "train", cfg.OUTPUT_DIR)
     cfg.freeze()
 
     output_dir = cfg.OUTPUT_DIR
