@@ -167,7 +167,7 @@ if __name__ == "__main__":
         "--lr",
         default="0.1",
         help="path to config file",
-        type=int,
+        type=float,
     )
 
     parser.add_argument("--local_rank", type=int, default=0)
