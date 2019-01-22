@@ -1,7 +1,8 @@
-python graph.py --lr 0.1
+#!/bin/bash
+python tools/graph.py --lr 0.1
 wait
-python graph.py --lr 0.01
+python tools/graph.py --lr 0.01
 wait
-python graph.py --lr 0.001
+python tools/graph.py --lr 0.001
 wait
-python graph.py --lr 0.0001
+python tools/graph.py --lr 0.0001
