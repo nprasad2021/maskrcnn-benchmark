@@ -110,7 +110,7 @@ def test(cfg, model, distributed):
         synchronize()
 
 
-def main(args, lr=None):
+def main(args, lr=None, skip_test=False):
 
     cfg = c.clone()
     num_gpus = int(os.environ["WORLD_SIZE"]) if "WORLD_SIZE" in os.environ else 1
@@ -149,7 +149,7 @@ def main(args, lr=None):
 
     model = train(cfg, args.local_rank, args.distributed)
 
-    if not args.skip_test:
+    if not args.skip_test and not skip_test:
         test(cfg, model, args.distributed)
 
 
@@ -161,6 +161,13 @@ if __name__ == "__main__":
         metavar="FILE",
         help="path to config file",
         type=str,
+    )
+
+    parser.add_argument(
+        "--lr",
+        default="0.1",
+        help="path to config file",
+        type=int,
     )
 
     parser.add_argument("--local_rank", type=int, default=0)
@@ -177,5 +184,7 @@ if __name__ == "__main__":
         nargs=argparse.REMAINDER,
     )
 
+
+
     args = parser.parse_args()
-    main(args)
+    main(args, args.lr, True)

@@ -1,7 +1,6 @@
 import argparse
 
 def mainder():
-    import train_net
     parser = argparse.ArgumentParser(description="PyTorch Object Detection Training")
     parser.add_argument(
         "--config-file",
@@ -28,7 +27,7 @@ def mainder():
     args = parser.parse_args()
     lrs = [0.1, 0.01, 0.001, 0.0001]
     for lr in lrs:
-        run(args, lr)
+        run(args, lr, True)
 
 def run(args, lr):
     from train_net import main
