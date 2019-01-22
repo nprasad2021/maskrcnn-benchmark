@@ -23,7 +23,7 @@ parser.add_argument(
 
 parser.add_argument(
     "--train",
-    default="1200",
+    default="500",
     help="number of training examples",
     type=int,
 )
