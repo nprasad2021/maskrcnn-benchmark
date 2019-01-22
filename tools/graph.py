@@ -8,7 +8,7 @@ from os import listdir
 from os.path import isfile, join
 
 import torch
-from maskrcnn_benchmark.config import cfg
+
 from maskrcnn_benchmark.data import make_data_loader
 from maskrcnn_benchmark.engine.inference import inference
 from maskrcnn_benchmark.modeling.detector import build_detection_model
@@ -81,9 +81,8 @@ def inf(args, cfg):
 
 def recordResults(args, cfg):
     homeDir = "/home/nprasad/Documents/github/maskrcnn-benchmark"
-    model_paths = [cfg.MODEL.WEIGHT] + get_model_paths(join(homeDir, cfg.OUTPUT_DIR))
-    if (not "output" in cfg.OUTPUT_DIR) and (not "test" in cfg.OUTPUT_DIR):
-        cfg.OUTPUT_DIR = os.path.join("output", "test", cfg.OUTPUT_DIR)
+    model_paths = [cfg.MODEL.WEIGHT] + get_model_paths(join(homeDir, "output", cfg.OUTPUT_DIR, "train"))
+    cfg.OUTPUT_DIR = os.path.join("output", cfg.OUTPUT_DIR, "test")
     if not os.path.exists(cfg.OUTPUT_DIR):
         os.makedirs(cfg.OUTPUT_DIR)
     output = {}
@@ -99,10 +98,12 @@ def recordResults(args, cfg):
     plot(output, cfg)
 
 def get_model_paths(directory):
+
     onlyfiles = [f for f in listdir(directory) if isfile(join(directory, f))]
     return [join(directory, file) for file in onlyfiles if ".pth" in file]
 
 def main():
+    from maskrcnn_benchmark.config import cfg
     parser = argparse.ArgumentParser(description="PyTorch Object Detection Inference")
     parser.add_argument(
         "--config-file",
@@ -117,11 +118,20 @@ def main():
         default=None,
         nargs=argparse.REMAINDER,
     )
+    parser.add_argument(
+        "--lr",
+        default="0.1",
+        help="path to config file",
+        type=float,
+    )
 
     args = parser.parse_args()
 
     cfg.merge_from_file(args.config_file)
     cfg.merge_from_list(args.opts)
+
+    cfg.SOLVER.BASE_LR = args.lr
+    cfg.OUTPUT_DIR = os.path.join(cfg.OUTPUT_DIR, str(args.lr))
 
     recordResults(args, cfg)
 

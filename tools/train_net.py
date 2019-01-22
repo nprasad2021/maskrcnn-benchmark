@@ -127,7 +127,7 @@ def main(args, lr=None, skip_test=False):
     if not lr is None:
         cfg.SOLVER.BASE_LR = lr
     cfg.OUTPUT_DIR = os.path.join(cfg.OUTPUT_DIR, str(lr))
-    cfg.OUTPUT_DIR = os.path.join("output", "train", cfg.OUTPUT_DIR)
+    cfg.OUTPUT_DIR = os.path.join("output", cfg.OUTPUT_DIR, "train")
     cfg.freeze()
 
     output_dir = cfg.OUTPUT_DIR
