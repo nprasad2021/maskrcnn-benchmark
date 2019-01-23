@@ -65,7 +65,7 @@ annotationDir = os.path.join(outDir, "annotations")
 if os.path.exists(outDir):
     shutil.rmtree(outDir)
 makeDirectory(outDir)
-all_stages = ['test']
+all_stages = ['test', 'train', 'val']
 if not args.freeze:
     all_stages.append("test")
 for stage in all_stages:
