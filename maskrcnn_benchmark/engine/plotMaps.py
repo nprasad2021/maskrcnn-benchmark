@@ -45,5 +45,3 @@ def scatter(server, part, save_dir):
 	plt.close()
 	print("SAVED PDF OF RESULTS", file_path)
 
-if __name__ == "__main__":
-	
