@@ -45,3 +45,44 @@ def scatter(server, part, save_dir):
 	plt.close()
 	print("SAVED PDF OF RESULTS", file_path)
 
+def getCGF(args):
+
+    from maskrcnn_benchmark.config import cfg
+    cfg.merge_from_file(args.config)
+    cfg.OUTPUT_DIR = os.path.join("output", cfg.OUTPUT_DIR, "test")
+    assert os.path.exists(cfg.OUTPUT_DIR)
+    cfg.merge_from_list(args.opts)
+    cfg.freeze()
+    return cfg
+
+
+if __name__ == "__main__":
+	parser = argparse.ArgumentParser(description="PyTorch Object Detection Inference")
+	parser.add_argument(
+	    "--config",
+	    default="/home/nprasad/Documents/github/maskrcnn-benchmark/configs/heads.yaml",
+	    metavar="FILE",
+	    help="path to config file",
+	)
+
+	parser.add_argument(
+	    "--home",
+	    default="/home/nprasad/Documents/github/maskrcnn-benchmark",
+	    metavar="FILE",
+	    help="path to root directory",
+	)
+	parser.add_argument("--local_rank", type=int, default=0)
+	parser.add_argument(
+	    "opts",
+	    help="Modify config options using the command-line",
+	    default=None,
+	    nargs=argparse.REMAINDER,
+	)
+
+    args = parser.parse_args()
+	with open('tmp_result.pkl', 'rb') as handle:
+    	output = pickle.load(handle)
+    cfg = getCFG(args)
+    plot(output, cfg)
+
+
