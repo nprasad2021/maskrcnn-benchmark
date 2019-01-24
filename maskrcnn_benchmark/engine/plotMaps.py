@@ -36,10 +36,14 @@ def scatter(server, part, save_dir):
 		plt.plot(its, acc, colors[i], label = mode)#.split("_")[1])
 		if "test" in mode:
 			final_acc = acc[-1]
-	plt.title("Accuracy over Time:", int(100*final_acc))
+
+	plt.title(("Accuracy over Time:" + str(int(100*final_acc))))
 	plt.xlabel("Number of Training Iterations")
 	plt.ylabel("Classification Accuracy")
 	plt.legend()
 	plt.savefig(file_path, dvi=1000)
 	plt.close()
 	print("SAVED PDF OF RESULTS", file_path)
+
+if __name__ == "__main__":
+	
