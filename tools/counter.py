@@ -22,7 +22,7 @@ def run(args):
     cfg = getCGF(args)
     c = COCODemo(
         cfg,
-        confidence_threshold=0.7,
+        confidence_threshold=0.3,
         masks_per_dim=2,
         min_image_size=224,
     )
