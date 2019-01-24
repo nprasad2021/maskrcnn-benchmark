@@ -26,7 +26,8 @@ def run(args):
         min_image_size=224,
     )
     pil_image = Image.open(args.filename).convert("RGB")
-    image = np.array(pil_image)#[:, :, [2, 1, 0]]
+    image = np.array(pil_image)[:, :, [2, 1, 0]]
+    cv2.imwrite(c.run_on_opencv_image(img), "../result.jpg")
     return c.get_count(image)
 
 def main():
