@@ -26,7 +26,7 @@ def run(args):
         min_image_size=224,
     )
     pil_image = Image.open(args.filename).convert("RGB")
-    image = np.array(pil_image)[:, :, [2, 1, 0]]
+    image = np.array(pil_image)#[:, :, [2, 1, 0]]
     return c.get_count(image)
 
 def main():
@@ -62,6 +62,6 @@ def main():
 
     args = parser.parse_args()
     print("Number of heads in image:", run(args))
-    
+
 if __name__ == "__main__":
     main()
