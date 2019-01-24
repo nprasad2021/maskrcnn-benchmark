@@ -93,9 +93,9 @@ def recordResults(args, cfg):
         elif "no" in path:
             ite = 0
         else:
-            ite = int(path.split("_")[1].split(".")[0])
+            ite = int(path.split("_")[-1].split(".")[0])
         output[ite] = inf(args, cfg)
-        
+
     with open('tmp_result.pkl', 'wb') as handle:
         pickle.dump(output, handle)
     plot(output, cfg)
