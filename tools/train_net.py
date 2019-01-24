@@ -124,9 +124,9 @@ def main(args, lr=None, skip_test=False):
 
     cfg.merge_from_file(args.config_file)
     cfg.merge_from_list(args.opts)
-    if not lr is None:
-        cfg.SOLVER.BASE_LR = lr
-    cfg.OUTPUT_DIR = os.path.join(cfg.OUTPUT_DIR, str(lr))
+    #if not lr is None:
+    #    cfg.SOLVER.BASE_LR = lr
+    #cfg.OUTPUT_DIR = os.path.join(cfg.OUTPUT_DIR, str(lr))
     cfg.OUTPUT_DIR = os.path.join("output", cfg.OUTPUT_DIR, "train")
     cfg.freeze()
 
@@ -165,7 +165,7 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "--lr",
-        default="0.1",
+        default="0.0005",
         help="path to config file",
         type=float,
     )
@@ -183,8 +183,6 @@ if __name__ == "__main__":
         default=None,
         nargs=argparse.REMAINDER,
     )
-
-
 
     args = parser.parse_args()
     main(args, args.lr, True)
