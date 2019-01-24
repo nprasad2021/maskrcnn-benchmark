@@ -2,6 +2,7 @@ import os, sys, argparse
 from PIL import Image
 import numpy as np
 from predict import COCODemo
+import cv2
 
 
 def getCGF(args):
