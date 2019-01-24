@@ -30,7 +30,7 @@ parser.add_argument(
 
 parser.add_argument(
     "--test",
-    default="200",
+    default="400",
     help="number of testing examples",
     type=int,
 )

@@ -25,7 +25,7 @@ def plot(output, cfg):
 
 def scatter(server, part, save_dir):
 	file_path = os.path.join(save_dir, part + "map.pdf")
-	plt.title("Accuracy over Time")
+	
 	colors = ['r-', 'b', 'g']
 	modes = list(server.keys())
 
@@ -34,6 +34,9 @@ def scatter(server, part, save_dir):
 		its, acc = zip(*(server[mode]))
 		#print(its, acc, mode)
 		plt.plot(its, acc, colors[i], label = mode)#.split("_")[1])
+		if "test" in mode:
+			final_acc = acc[-1]
+	plt.title("Accuracy over Time:", int(100*final_acc))
 	plt.xlabel("Number of Training Iterations")
 	plt.ylabel("Classification Accuracy")
 	plt.legend()

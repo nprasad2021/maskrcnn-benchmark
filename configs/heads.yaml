@@ -22,7 +22,7 @@ MODEL:
     NUM_CLASSES: 2
 DATASETS:
   TRAIN: ("cocohead_train",)
-  TEST: ("cocohead_test", "cocohead_val", "cocohead_train")
+  TEST: ("cocohead_test", "cocohead_train")
 DATALOADER: 
   SIZE_DIVISIBILITY: 32
 SOLVER:
@@ -31,7 +31,7 @@ SOLVER:
   MAX_ITER: 10000 # 20 * NUM_IMAGES
   IMS_PER_BATCH: 8
   STEPS: (7000, 9000)
-  CHECKPOINT_PERIOD: 500
+  CHECKPOINT_PERIOD: 750
 TEST:
   IMS_PER_BATCH: 4
 OUTPUT_DIR: "lr"
