@@ -80,7 +80,7 @@ def inf(args, cfg):
     return output_tuple
 
 def recordResults(args, cfg):
-    homeDir = "/home/nprasad/Documents/github/maskrcnn-benchmark"
+    homeDir = args.home
     model_paths = [cfg.MODEL.WEIGHT] + get_model_paths(join(homeDir, "output", cfg.OUTPUT_DIR, "train"))
     cfg.OUTPUT_DIR = os.path.join("output", cfg.OUTPUT_DIR, "test")
     if not os.path.exists(cfg.OUTPUT_DIR):
@@ -95,6 +95,9 @@ def recordResults(args, cfg):
         else:
             ite = int(path.split("_")[1].split(".")[0])
         output[ite] = inf(args, cfg)
+        
+    with open('tmp_result.pkl', 'wb') as handle:
+        pickle.dump(output, handle)
     plot(output, cfg)
 
 def get_model_paths(directory):
@@ -110,6 +113,13 @@ def main():
         default="/home/nprasad/Documents/github/maskrcnn-benchmark/configs/heads.yaml",
         metavar="FILE",
         help="path to config file",
+    )
+
+    parser.add_argument(
+        "--home",
+        default="/home/nprasad/Documents/github/maskrcnn-benchmark",
+        metavar="FILE",
+        help="path to root directory",
     )
     parser.add_argument("--local_rank", type=int, default=0)
     parser.add_argument(
