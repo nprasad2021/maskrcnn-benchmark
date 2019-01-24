@@ -35,13 +35,14 @@ def scatter(server, part, save_dir):
 		#print(its, acc, mode)
 		plt.plot(its, acc, colors[i], label = mode)#.split("_")[1])
 		if "test" in mode:
-			final_acc = acc[-1]
-
-	plt.title(("Accuracy over Time:" + str(int(100*final_acc))))
+			test_acc = acc[-1]
+		if "train" in mode:
+			train_acc = acc[-1]
+	plt.title(("Accuracy over Time:" + str(int(100*test_acc)) + "/" + str(int(100*train_acc))))
 	plt.xlabel("Number of Training Iterations")
 	plt.ylabel("Classification Accuracy")
 	plt.legend()
-	plt.savefig(file_path, dvi=1000)
+	plt.savefig(file_path, dvi=1000)	
 	plt.close()
 	print("SAVED PDF OF RESULTS", file_path)
 
@@ -78,11 +79,11 @@ if __name__ == "__main__":
 	    default=None,
 	    nargs=argparse.REMAINDER,
 	)
-
-    args = parser.parse_args()
+	
+	args = parser.parse_args()
 	with open('tmp_result.pkl', 'rb') as handle:
-    	output = pickle.load(handle)
-    cfg = getCFG(args)
-    plot(output, cfg)
+		output = pickle.load(handle)
+	cfg = getCFG(args)
+	plot(output, cfg)
 
 
