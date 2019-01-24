@@ -104,11 +104,12 @@ class COCODemo(object):
 
     def get_count(self, image):
         predictions = self.compute_prediction(image)
-        return getNumTop(predictions)
+        return self.getNumTop(predictions)
 
     def getNumTop(self, predictions):
         scores = predictions.get_field("scores")
         keep = torch.nonzero(scores > self.confidence_threshold).squeeze(1)
+        print("type of keep", type(keep))
         return len(keep)      
 
     def compute_prediction(self, original_image):
