@@ -30,14 +30,14 @@ parser.add_argument(
 
 parser.add_argument(
     "--test",
-    default="240",
+    default="150",
     help="number of testing examples",
     type=int,
 )
 
 parser.add_argument(
     "--val",
-    default="200",
+    default="50",
     help="number of validation examples",
     type=int,
 )
@@ -52,7 +52,7 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-gridSizes = [3,5,7,9,11] #[1, 3, 5, 7]
+gridSizes = [1,3,5,7] #[1, 3, 5, 7]
 visualize = False
 numImages = {'train':args.train, 'test':args.test, 'val':args.val}
 verbose = True
