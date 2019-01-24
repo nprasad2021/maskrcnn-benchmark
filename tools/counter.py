@@ -28,7 +28,8 @@ def run(args):
     )
     pil_image = Image.open(args.filename).convert("RGB")
     image = np.array(pil_image)[:, :, [2, 1, 0]]
-    cv2.imwrite(c.run_on_opencv_image(image), "../result.jpg")
+    composite = c.run_on_opencv_image(image)
+    cv2.imwrite("../result.jpg", composite)
     return c.get_count(image)
 
 def main():
