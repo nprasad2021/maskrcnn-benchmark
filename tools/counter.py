@@ -22,7 +22,7 @@ def run(args):
     cfg = getCGF(args)
     c = COCODemo(
         cfg,
-        confidence_threshold=0.1,
+        confidence_threshold=args.conf,
         masks_per_dim=2,
         min_image_size=224,
     )
@@ -53,6 +53,12 @@ def main():
         default=os.path.join("output", "lr/0.0001/test"),
         help="path to dataset output",
         type=str,
+    )
+
+    parser.add_argument(
+        "--conf",
+        default=0.3,
+        type=float,
     )
 
     parser.add_argument(

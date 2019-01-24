@@ -130,8 +130,8 @@ def main():
     cfg.merge_from_file(args.config_file)
     cfg.merge_from_list(args.opts)
 
-    cfg.SOLVER.BASE_LR = args.lr
-    cfg.OUTPUT_DIR = os.path.join(cfg.OUTPUT_DIR, str(args.lr))
+    #cfg.SOLVER.BASE_LR = args.lr
+    #cfg.OUTPUT_DIR = os.path.join(cfg.OUTPUT_DIR, str(args.lr))
 
     recordResults(args, cfg)
 
