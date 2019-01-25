@@ -124,9 +124,9 @@ def main(args, wd=None, skip_test=False):
 
     cfg.merge_from_file(args.config_file)
     cfg.merge_from_list(args.opts)
-    if not wd is None:
-        cfg.SOLVER.WEIGHT_DECAY = wd
-    cfg.OUTPUT_DIR = os.path.join(cfg.OUTPUT_DIR, str(wd))
+    #if not wd is None:
+    #    cfg.SOLVER.WEIGHT_DECAY = wd
+    #cfg.OUTPUT_DIR = os.path.join(cfg.OUTPUT_DIR, str(wd))
     cfg.OUTPUT_DIR = os.path.join("output", cfg.OUTPUT_DIR, "train")
     cfg.freeze()
 
