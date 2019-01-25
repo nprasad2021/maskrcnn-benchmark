@@ -16,7 +16,7 @@ def getCGF(args):
     return cfg
 
 
-def run(args):
+def run(args, filename, save_path="../result.jpg"):
 
     # prepare object that handles inference plus adds predictions on top of image
     cfg = getCGF(args)
@@ -26,10 +26,10 @@ def run(args):
         masks_per_dim=2,
         min_image_size=224,
     )
-    pil_image = Image.open(args.filename).convert("RGB")
+    pil_image = Image.open(filename).convert("RGB")
     image = np.array(pil_image)[:, :, [2, 1, 0]]
     composite = c.run_on_opencv_image(image)
-    cv2.imwrite("../result.jpg", composite)
+    cv2.imwrite(save_path, composite)
     return c.get_count(image)
 
 def main():
@@ -68,9 +68,11 @@ def main():
         nargs=argparse.REMAINDER,
     )
 
+    parser.add_argument("--local_rank", type=int, default=0)
+
 
     args = parser.parse_args()
-    print("Number of heads in image:", run(args))
+    print("Number of heads in image:", run(args, args.filename))
 
 if __name__ == "__main__":
     main()
