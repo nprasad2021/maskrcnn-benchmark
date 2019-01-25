@@ -129,8 +129,8 @@ def main():
         nargs=argparse.REMAINDER,
     )
     parser.add_argument(
-        "--lr",
-        default="0.1",
+        "--wd",
+        default="0.0001",
         help="path to config file",
         type=float,
     )
@@ -140,8 +140,8 @@ def main():
     cfg.merge_from_file(args.config_file)
     cfg.merge_from_list(args.opts)
 
-    #cfg.SOLVER.BASE_LR = args.lr
-    #cfg.OUTPUT_DIR = os.path.join(cfg.OUTPUT_DIR, str(args.lr))
+    cfg.SOLVER.WEIGHT_DECAY = args.wd
+    cfg.OUTPUT_DIR = os.path.join(cfg.OUTPUT_DIR, str(args.wd))
 
     recordResults(args, cfg)
 

@@ -275,7 +275,7 @@ def main():
         sub = False
         if "all" in stage:
             numImages[stage] = len(imgFilenames)
-            
+
         if "train" in stage: 
             sub = True
             image_annotations_sub = []
@@ -283,7 +283,7 @@ def main():
 
         for gridSize in gridSizes:
             under = True
-            for i in range(numImages[stage]):
+            for i in range(numImages[stage] // len(gridSizes)):
                 imgCount += 1
 
                 if i > (numImages[stage]*subset): under = False
