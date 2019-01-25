@@ -139,7 +139,7 @@ def main():
 
     cfg.merge_from_file(args.config_file)
     cfg.merge_from_list(args.opts)
-    if not args.wd == "None":
+    if not args.wd == 0:
         cfg.SOLVER.WEIGHT_DECAY = args.wd
         cfg.OUTPUT_DIR = os.path.join(cfg.OUTPUT_DIR, str(args.wd))
 
