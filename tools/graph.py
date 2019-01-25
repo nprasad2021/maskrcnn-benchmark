@@ -70,8 +70,9 @@ def inf(args, cfg):
             expected_results=cfg.TEST.EXPECTED_RESULTS,
             expected_results_sigma_tol=cfg.TEST.EXPECTED_RESULTS_SIGMA_TOL,
             output_folder=output_folder,
-        )[0].results['bbox']
-
+        )
+        print("type of output of inference calculation", type(r))
+        r = r[0].results['bbox']
         output_tuple[dataset_name] = {}
         output_tuple[dataset_name]['AP'] = r['AP'].item()
         output_tuple[dataset_name]['AP50'] = r['AP50'].item()
