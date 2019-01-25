@@ -91,7 +91,11 @@ class DatasetCatalog(object):
         "cocohead_test": {
             "img_dir": "head/test",
             "ann_file": "head/annotations/instances_test.json"
-        }
+        },
+        "cocohead_sub": {
+            "img_dir": "head/sub",
+            "ann_file": "head/annotations/instances_sub.json"
+        },
     }
 
     @staticmethod

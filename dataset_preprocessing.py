@@ -49,9 +49,16 @@ parser.add_argument(
     type=bool,
 )
 
+parser.add_argument(
+    "--all",
+    default=False,
+    help="to calculate test only if False",
+    type=bool,
+)
 
 args = parser.parse_args()
 
+subset = 0.2
 gridSizes = [1,3,5,7] #[1, 3, 5, 7]
 visualize = False
 numImages = {'train':args.train, 'test':args.test, 'val':args.val}
@@ -62,16 +69,6 @@ assert os.path.exists(rawDataDir)
 outDir = args.output
 annotationDir = os.path.join(outDir, "annotations")
 
-if os.path.exists(outDir):
-    shutil.rmtree(outDir)
-makeDirectory(outDir)
-all_stages = ['test', 'train', 'val']
-if not args.freeze:
-    all_stages.append("test")
-for stage in all_stages:
-    makeDirectory(os.path.join(outDir, stage))
-makeDirectory(annotationDir)
-
 imgDir = os.path.join(rawDataDir, "JPEGImages")
 annoDir = os.path.join(rawDataDir, "Annotations") 
 splitDir = os.path.join(rawDataDir, "Splits")
@@ -81,8 +78,48 @@ assert os.path.exists(imgDir)
 assert os.path.exists(annoDir)
 assert os.path.exists(splitDir)
 
+
+
+all_stages = ['train', 'val']
+if not args.freeze:
+    all_stages.append("test")
+    deleteFiles(outDir, ['dat'])
+else:
+    deleteFiles(annotationDir, ['test'])
+    deleteFiles(outDir, ['test', 'dat', 'annotations'])
+
+if args.all:
+    all_stages.append("all")
+
+for stage in all_stages:
+    makeDirectory(os.path.join(outDir, stage))
+if not os.path.exists(annotationDir):
+    makeDirectory(annotationDir)
+
+
+def deleteFiles(dirPath, keywords):
+    if not os.path.exists(dirPath): return
+    for name in os.listdir(dirPath):
+        path = os.path.join(dirPath, name)
+
+        delete = True
+        for key in keywords:
+            if key in name: delete = False
+        if delete:
+            if os.path.isfile(path): os.remove(path)
+            if os.path.isdir(path): shutil.rmtree(path)
+
+
 def findFilenames(stage):
+    if "all" in stage:
+        return findAllFilenames()
     return readFile(os.path.join(splitDir, stage + ".txt"))
+
+def findAllFilenames():
+    files = []
+    for item in ['train', 'val', 'test']:
+        files = files + findFilenames(item)
+    return files
 
 def computeImageSizes(stage, imgFilenamesSorted):
     imgSizesFilename = os.path.join(outDir, "imgSizes_" + stage + ".dat")
@@ -185,7 +222,7 @@ def image_mosaic(gridSize, imgPaths, imgScale):
 def calculate_coco_bounding_box(bbox, width, height):
     return float(bbox['xmin']), float(bbox['ymin']), float(bbox['xmax']-bbox['xmin']), float(bbox['ymax']-bbox['ymin'])
 
-def annotate_image(gridSize, imgFilenames, imgSizes, imgCount, annotationCount, stage):
+def annotate_image(gridSize, imgFilenames, imgSizes, imgCount, annotationCount, stage, store_sub=False):
     imgPaths, annoObjs, imgScale = assemble_images(gridSize, imgFilenames, imgSizes)
     
     outImg = image_mosaic(gridSize, imgPaths, imgScale)
@@ -195,6 +232,13 @@ def annotate_image(gridSize, imgFilenames, imgSizes, imgCount, annotationCount, 
     outImgPath = os.path.join(outDir, stage, outImgFilename)
     print(outImgPath)
     imwrite(outImg, outImgPath)
+
+    if store_sub:
+        subFolder = os.path.join(outDir, "sub")
+        if not os.path.exists(subFolder):
+            makeDirectory(subFolder)
+        outSubPath = os.path.join(outDir, "sub", outImgFilename)
+        imwrite(outImg, outSubPath)
     
     image_annotation = {"id":imgCount, "width":width, "height":height, "license":1, "file_name":outImgFilename}
     object_annotations = []
@@ -228,16 +272,35 @@ def main():
         
         imgFilenames = findFilenames(stage)
         imgSizes = computeImageSizes(stage, imgFilenames)
-        
+        sub = False
+        if "all" in stage:
+            numImages[stage] = len(imgFilenames)
+            
+        if "train" in stage: 
+            sub = True
+            image_annotations_sub = []
+            object_annotations_sub = []
+
         for gridSize in gridSizes:
+            under = True
             for i in range(numImages[stage]):
                 imgCount += 1
-                im_anno, obj_anno, annotationCount = annotate_image(gridSize, imgFilenames, imgSizes, imgCount, annotationCount, stage)
+
+                if i > (numImages[stage]*subset): under = False
+
+                im_anno, obj_anno, annotationCount = annotate_image(gridSize, imgFilenames, imgSizes, imgCount, 
+                                                                        annotationCount, stage, (sub and under))
                 
                 image_annotations.append(im_anno)
                 object_annotations.extend(obj_anno)
+                if sub and under:
+                    image_annotations_sub.append(im_anno)
+                    object_annotations_sub.extend(obj_anno) 
+
                 
         dump_annotations(image_annotations, object_annotations, stage)
+        if sub:
+            dump_annotations(image_annotations_sub, object_annotations_sub, "sub")
         
 if __name__ == "__main__":
     main()
