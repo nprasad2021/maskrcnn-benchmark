@@ -90,7 +90,7 @@ def recordResults(args, cfg):
         cfg.MODEL.WEIGHT = path
         if "final" in path:
             ite = cfg.SOLVER.MAX_ITER
-        elif "no" in path:
+        elif "no" in path or "catalog" in path:
             ite = 0
         else:
             ite = int(path.split("_")[-1].split(".")[0])
