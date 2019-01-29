@@ -140,7 +140,7 @@ def computeImageSizes(stage, imgFilenamesSorted):
     writePickle(imgSizesFilename, imgSizes)
     return imgSizes
 
-def assemble_images(gridSize, imgFilenames, imgSizes):
+def assemble_images(gridSize, imgFilenames, imgSizes, scale=False):
     imgPaths = []
     annoObjs = []
     
