@@ -78,6 +78,7 @@ assert os.path.exists(imgDir)
 assert os.path.exists(annoDir)
 assert os.path.exists(splitDir)
 
+
 def deleteFiles(dirPath, keywords):
     if not os.path.exists(dirPath): return
     for name in os.listdir(dirPath):
@@ -105,8 +106,6 @@ for stage in all_stages:
     makeDirectory(os.path.join(outDir, stage))
 if not os.path.exists(annotationDir):
     makeDirectory(annotationDir)
-
-
 
 
 
