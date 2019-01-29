@@ -44,8 +44,8 @@ parser.add_argument(
 
 parser.add_argument(
     "--freeze",
-    default=True,
-    help="to calculate test",
+    default=False,
+    help="if true, do not replace test",
     type=bool,
 )
 
@@ -59,7 +59,7 @@ parser.add_argument(
 args = parser.parse_args()
 
 subset = 0.2
-gridSizes = [1,3,5,7] #[1, 3, 5, 7]
+gridSizes = [1,5,7] #[1, 3, 5, 7]
 visualize = False
 numImages = {'train':args.train, 'test':args.test, 'val':args.val}
 verbose = True
@@ -78,7 +78,17 @@ assert os.path.exists(imgDir)
 assert os.path.exists(annoDir)
 assert os.path.exists(splitDir)
 
+def deleteFiles(dirPath, keywords):
+    if not os.path.exists(dirPath): return
+    for name in os.listdir(dirPath):
+        path = os.path.join(dirPath, name)
 
+        delete = True
+        for key in keywords:
+            if key in name: delete = False
+        if delete:
+            if os.path.isfile(path): os.remove(path)
+            if os.path.isdir(path): shutil.rmtree(path)
 
 all_stages = ['train', 'val']
 if not args.freeze:
@@ -97,17 +107,7 @@ if not os.path.exists(annotationDir):
     makeDirectory(annotationDir)
 
 
-def deleteFiles(dirPath, keywords):
-    if not os.path.exists(dirPath): return
-    for name in os.listdir(dirPath):
-        path = os.path.join(dirPath, name)
 
-        delete = True
-        for key in keywords:
-            if key in name: delete = False
-        if delete:
-            if os.path.isfile(path): os.remove(path)
-            if os.path.isdir(path): shutil.rmtree(path)
 
 
 def findFilenames(stage):
