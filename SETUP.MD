@@ -1,5 +1,6 @@
 # How to train and test the head detector
 Neeraj Prasad
+
 ## Setup and Installation
 
 Run the following instructions in bash in your Linux Environment with GPUs
@@ -119,7 +120,12 @@ python demo/webcam.py --config-file [CONFIG_FILE_PATH] --modelpath [PATH_TO_MODE
 python demo/webcam.py --min-image-size 300 MODEL.DEVICE cpu # on CPU (still need modelpath and config params)
 ```
 
+## Next Steps
 
+* Upscale Images
+* Weight Decay
+* R-101 instead of R-50
+* Image Augmentation
 
 
 
