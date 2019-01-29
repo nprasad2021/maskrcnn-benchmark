@@ -83,8 +83,13 @@ To train your model, use the following command:
 ```
 python tools/train_net.py --config-file [PATH_TO_CONFIG] --skip-test [bool]
 ```
-Note that all intermediate models will be stored in ```output/[output_dir]/train```
+Note that all intermediate models will be stored in ```output/[output_dir]/train```.
+Also, note that this configuration only uses 1 GPU. To use more,
 
+```
+export NGPUS=8
+python -m torch.distributed.launch --nproc_per_node=$NGPUS ./tools/train_net.py
+```
 
 ### Validate
 
