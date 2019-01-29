@@ -29,7 +29,7 @@ parser.add_argument(
 
 parser.add_argument(
     "--url",
-    default=ModelCatalog.get("Caffe2Detectron/COCO/35857345/e2e_faster_rcnn_R-50-FPN_1x"),
+    default="Caffe2Detectron/COCO/35857345/e2e_faster_rcnn_R-50-FPN_1x",
     help="url to file",
     type=str,
 )
@@ -37,7 +37,7 @@ parser.add_argument(
 args = parser.parse_args()
 
 pretrained_path = "../tmp.pth"
-URL = args.url
+URL = ModelCatalog.get(args.url)
 urllib.request.urlretrieve(URL, pretrained_path)
 
 saveDir = "../pretrained_models"

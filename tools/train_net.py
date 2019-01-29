@@ -110,7 +110,7 @@ def test(cfg, model, distributed):
         synchronize()
 
 
-def main(args, wd=None, skip_test=False):
+def main(args, skip_test=False):
 
     cfg = c.clone()
     num_gpus = int(os.environ["WORLD_SIZE"]) if "WORLD_SIZE" in os.environ else 1
@@ -124,9 +124,7 @@ def main(args, wd=None, skip_test=False):
 
     cfg.merge_from_file(args.config_file)
     cfg.merge_from_list(args.opts)
-    #if not wd is None:
-    #    cfg.SOLVER.WEIGHT_DECAY = wd
-    #cfg.OUTPUT_DIR = os.path.join(cfg.OUTPUT_DIR, str(wd))
+
     cfg.OUTPUT_DIR = os.path.join("output", cfg.OUTPUT_DIR, "train")
     cfg.freeze()
 
@@ -163,13 +161,6 @@ if __name__ == "__main__":
         type=str,
     )
 
-    parser.add_argument(
-        "--wd",
-        default="0.0001",
-        help="weight decay",
-        type=float,
-    )
-
     parser.add_argument("--local_rank", type=int, default=0)
     parser.add_argument(
         "--skip-test",
@@ -185,4 +176,4 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    main(args, args.wd, True)
+    main(args, True)

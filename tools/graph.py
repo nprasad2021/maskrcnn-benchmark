@@ -118,7 +118,7 @@ def main():
 
     parser.add_argument(
         "--home",
-        default="/home/nprasad/Documents/github/maskrcnn-benchmark",
+        default="./",
         metavar="FILE",
         help="path to root directory",
     )
@@ -129,20 +129,11 @@ def main():
         default=None,
         nargs=argparse.REMAINDER,
     )
-    parser.add_argument(
-        "--wd",
-        default="0.0001",
-        help="path to config file",
-        type=float,
-    )
 
     args = parser.parse_args()
 
     cfg.merge_from_file(args.config_file)
     cfg.merge_from_list(args.opts)
-    if not args.wd == 0:
-        cfg.SOLVER.WEIGHT_DECAY = args.wd
-        cfg.OUTPUT_DIR = os.path.join(cfg.OUTPUT_DIR, str(args.wd))
 
     recordResults(args, cfg)
 

@@ -7,8 +7,7 @@ import cv2
 
 def getCGF(args):
     from maskrcnn_benchmark.config import cfg
-    cfg.merge_from_file("/home/nprasad/Documents/github/maskrcnn-benchmark/configs/heads.yaml")
-    cfg.OUTPUT_DIR = args.output
+    cfg.merge_from_file(args.cfg)
     cfg.MODEL.WEIGHT = args.model
     assert os.path.exists(cfg.OUTPUT_DIR)
     cfg.merge_from_list(args.opts)
@@ -16,7 +15,7 @@ def getCGF(args):
     return cfg
 
 
-def run(args, filename, save_path="../result.jpg"):
+def run(args, filename):
 
     # prepare object that handles inference plus adds predictions on top of image
     cfg = getCGF(args)
@@ -29,7 +28,7 @@ def run(args, filename, save_path="../result.jpg"):
     pil_image = Image.open(filename).convert("RGB")
     image = np.array(pil_image)[:, :, [2, 1, 0]]
     composite = c.run_on_opencv_image(image)
-    cv2.imwrite(save_path, composite)
+    cv2.imwrite(args.save, composite)
     return c.get_count(image)
 
 def main():
@@ -49,9 +48,9 @@ def main():
     )
 
     parser.add_argument(
-        "--output",
-        default=os.path.join("output", "lr/0.0001/test"),
-        help="path to dataset output",
+        "--save",
+        default="../result.jpg",
+        help="path to annotated image",
         type=str,
     )
 
@@ -66,6 +65,12 @@ def main():
         help="Modify config options using the command-line",
         default=None,
         nargs=argparse.REMAINDER,
+    )
+    parser.add_argument(
+        "--cfg",
+        default="/home/nprasad/Documents/github/maskrcnn-benchmark/configs/heads.yaml",
+        metavar="FILE",
+        help="path to config file",
     )
 
     parser.add_argument("--local_rank", type=int, default=0)
