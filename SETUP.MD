@@ -46,14 +46,14 @@ python trim_detectron_model.py --cfg [PATH_TO_CONFIG_FILE]
 If you do not wish to use the default model, you can add the optional argument
 ```--url``` and select one of the following:
  ```
-"35857197/e2e_faster_rcnn_R-50-C4_1x",
-"35857345/e2e_faster_rcnn_R-50-FPN_1x"
-"35857890/e2e_faster_rcnn_R-101-FPN_1x"
-"36761737/e2e_faster_rcnn_X-101-32x8d-FPN_1x"
-"35858791/e2e_mask_rcnn_R-50-C4_1x"
-"35858933/e2e_mask_rcnn_R-50-FPN_1x"
-"35861795/e2e_mask_rcnn_R-101-FPN_1x"
-"36761843/e2e_mask_rcnn_X-101-32x8d-FPN_1x"
+"Caffe2Detectron/COCO/35857197/e2e_faster_rcnn_R-50-C4_1x",
+"Caffe2Detectron/COCO/35857345/e2e_faster_rcnn_R-50-FPN_1x"
+"Caffe2Detectron/COCO/35857890/e2e_faster_rcnn_R-101-FPN_1x"
+"Caffe2Detectron/COCO/36761737/e2e_faster_rcnn_X-101-32x8d-FPN_1x"
+"Caffe2Detectron/COCO/35858791/e2e_mask_rcnn_R-50-C4_1x"
+"Caffe2Detectron/COCO/35858933/e2e_mask_rcnn_R-50-FPN_1x"
+"Caffe2Detectron/COCO/35861795/e2e_mask_rcnn_R-101-FPN_1x"
+"Caffe2Detectron/COCO/36761843/e2e_mask_rcnn_X-101-32x8d-FPN_1x"
 ```
 For example, to use ResNet-101
 
