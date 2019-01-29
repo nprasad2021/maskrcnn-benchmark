@@ -22,7 +22,7 @@ MODEL:
     NUM_CLASSES: 2
 DATASETS:
   TRAIN: ("cocohead_train",)
-  TEST: ("cocohead_test", "cocohead_val", "cocohead_train")
+  TEST: ("cocohead_test", "cocohead_train")
 DATALOADER: 
   SIZE_DIVISIBILITY: 32
 SOLVER:

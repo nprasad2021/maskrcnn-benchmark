@@ -9,7 +9,7 @@ def getCGF(args):
     from maskrcnn_benchmark.config import cfg
     cfg.merge_from_file(args.cfg)
     cfg.MODEL.WEIGHT = args.model
-    assert os.path.exists(cfg.OUTPUT_DIR)
+    #assert os.path.exists(cfg.OUTPUT_DIR)
     cfg.merge_from_list(args.opts)
     cfg.freeze()
     return cfg
