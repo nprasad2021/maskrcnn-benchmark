@@ -91,7 +91,7 @@ def deleteFiles(dirPath, keywords):
             if os.path.isdir(path): shutil.rmtree(path)
 
 all_stages = ['train', 'val']
-if not args.freeze:
+if (not args.freeze) or (not os.path.exists(os.path.join(outDir, "test"))):
     all_stages.append("test")
     deleteFiles(outDir, ['dat'])
 else:
