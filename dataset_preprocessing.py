@@ -59,7 +59,7 @@ parser.add_argument(
 args = parser.parse_args()
 
 subset = 0.2
-gridSizes = [1,3,5,7] #[1, 3, 5, 7]
+gridSizes = [7] #[1, 3, 5, 7]
 visualize = False
 numImages = {'train':args.train, 'test':args.test, 'val':args.val}
 verbose = True

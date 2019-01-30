@@ -93,6 +93,8 @@ def recordResults(args, cfg):
             ite = cfg.SOLVER.MAX_ITER
         elif "no" in path or "catalog" in path:
             ite = 0
+            if "catalog" in path:
+                continue
         else:
             ite = int(path.split("_")[-1].split(".")[0])
         output[ite] = inf(args, cfg)
