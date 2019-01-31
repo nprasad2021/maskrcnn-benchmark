@@ -28,7 +28,7 @@ Do you want to use a model pre-trained on ImageNet or on Coco?
 
 ### ImageNet
 
-Navigate to the configs directory. The file ```heads.yaml``` is the configuration you should edit. Choose 
+Navigate to the configs directory. The file ```heads.yaml``` is an example configuration. Choose 
 a pre-trained ImageNet model following the example from the other config files in your directory.
 Change the ```MODEL.WEIGHT``` parameter to the URL for the ImageNet model.
 
@@ -109,6 +109,12 @@ To count the number of heads in an user-picked image, run the following command:
 ```
 python tools/counter.py --filename [PATH_TO_IMAGE_FILE] --model [PATH_TO_MODEL] \
     --output [PATH_TO_ANNOTATED_IMAGE] --conf [CONFIDENCE]
+```
+
+To find mAP accuracies for the final model in a particular experiment:
+
+```
+python tools/test_net.py --config-file [PATH_TO_CONFIG]
 ```
 
 To convert a video file to an annotated video for head detection:
