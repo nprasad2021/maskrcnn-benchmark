@@ -56,6 +56,27 @@ parser.add_argument(
     type=bool,
 )
 
+parser.add_argument(
+    "--h",
+    default="800",
+    help="height scale",
+    type=int,
+)
+
+parser.add_argument(
+    "--w",
+    default="1200",
+    help="width scale",
+    type=int,
+)
+
+parser.add_argument(
+    "--m",
+    default="1",
+    help="min scale",
+    type=int,
+)
+
 args = parser.parse_args()
 
 subset = 0.2
@@ -63,6 +84,9 @@ gridSizes = [7] #[1, 3, 5, 7]
 visualize = False
 numImages = {'train':args.train, 'test':args.test, 'val':args.val}
 verbose = True
+heightScale = args.h
+widthScale = args.w
+minScale = args.m
 
 rawDataDir = args.origin
 assert os.path.exists(rawDataDir)
@@ -159,13 +183,13 @@ def assemble_images(gridSize, imgFilenames, imgSizes, scale=False):
                 if gridPosW == 0 and gridPosH == 0:
                     targetImgW = w
                     targetImgH = h
-                    imgScale = max(1200 / (targetImgW * gridSize), 800 / (targetImgH * gridSize))
-                    imgScale = min(1.0, imgScale)
+                    imgScale = max(widthScale / (targetImgW * gridSize), heightScale / (targetImgH * gridSize))
+                    imgScale = min(minScale, imgScale) # 2.0 weight
+
 
                 # Only add images in grid of the same size
                 if w != targetImgW or h != targetImgH:
                     continue  #pick another random image until image with same w,h found
-
 
                 # Load annotation
                 annoFilename = imgFilename.replace(".jpeg", ".xml")

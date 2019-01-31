@@ -135,7 +135,7 @@ def main(model_path=None):
     if not model_path is None:
         cfg.MODEL.WEIGHT = model_path
     if (not "output" in cfg.OUTPUT_DIR) and (not "train" in cfg.OUTPUT_DIR):
-        cfg.OUTPUT_DIR = os.path.join("output", "train", cfg.OUTPUT_DIR)
+        cfg.OUTPUT_DIR = os.path.join("output", cfg.OUTPUT_DIR, "train")
     assert os.path.exists(cfg.OUTPUT_DIR), "output directory made incorrectly"
     cfg.freeze()
 
